@@ -217,10 +217,10 @@ export default function CustomPanel() {
             name="font-family"
             value={config.fontFamily}
             onChange={(e) => setConfig({ fontFamily: e.target.value })}
-            className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
+            className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
           >
             {FONTS.map((f) => (
-              <option key={f} value={f}>
+              <option key={f} value={f} className="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300">
                 {f}
               </option>
             ))}
@@ -265,7 +265,7 @@ export default function CustomPanel() {
               name="legend-position"
               value={config.legendPosition || 'top-right'}
               onChange={(e) => setConfig({ legendPosition: e.target.value as 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' })}
-              className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
+              className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
             >
               <option value="top-right">Top Right</option>
               <option value="top-center">Top Center</option>
@@ -305,7 +305,7 @@ export default function CustomPanel() {
             name="value-format"
             value={config.valueFormat}
             onChange={(e) => setConfig({ valueFormat: e.target.value as 'full' | 'abbreviated' | 'percentage' })}
-            className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
+            className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
           >
             <option value="full">Full ($1,000,000)</option>
             <option value="abbreviated">Abbreviated ($1.0M)</option>
@@ -319,7 +319,7 @@ export default function CustomPanel() {
             name="negative-format"
             value={config.negativeFormat}
             onChange={(e) => setConfig({ negativeFormat: e.target.value as 'minus' | 'parentheses' })}
-            className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
+            className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
           >
             <option value="parentheses">Parentheses ($1M)</option>
             <option value="minus">Minus -$1M</option>
@@ -353,7 +353,7 @@ export default function CustomPanel() {
             name="delta-base"
             value={config.deltaBase}
             onChange={(e) => setConfig({ deltaBase: e.target.value as 'start' | 'previous' })}
-            className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
+            className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
           >
             <option value="start">Relative to start</option>
             <option value="previous">Relative to previous</option>

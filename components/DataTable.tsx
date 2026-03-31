@@ -119,10 +119,10 @@ function SortableRow({
         name={`type-${row.id}`}
         value={row.type}
         onChange={(e) => onUpdate(row.id, { type: e.target.value as BarType })}
-        className={`w-20 bg-transparent text-xs ${typeColor} border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-1 py-1 transition-colors cursor-pointer`}
+        className={`w-20 bg-white dark:bg-gray-900 text-xs ${typeColor} border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-1 py-1 transition-colors cursor-pointer`}
       >
         {TYPE_OPTIONS.map((opt) => (
-          <option key={opt.value} value={opt.value}>
+          <option key={opt.value} value={opt.value} className="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300">
             {opt.label}
           </option>
         ))}
