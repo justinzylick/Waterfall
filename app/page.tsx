@@ -57,6 +57,22 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+      {/* Mobile portrait notice */}
+      <div className="mobile-portrait-notice items-center justify-center fixed inset-0 z-50 bg-white dark:bg-gray-950 px-8">
+        <div className="text-center space-y-3">
+          <svg className="mx-auto text-gray-400 dark:text-gray-500" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <rect x="4" y="2" width="16" height="20" rx="2" />
+            <path d="M12 18h.01" />
+          </svg>
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+            For the best experience, please rotate your device to landscape mode.
+          </p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            This tool is optimized for desktop and landscape viewing.
+          </p>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="flex items-center justify-between px-6 py-3 border-b border-gray-100 dark:border-gray-800">
         <div className="flex items-center gap-3">
