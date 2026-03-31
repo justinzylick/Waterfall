@@ -130,17 +130,17 @@ export default function Home() {
           <DataTable />
           <ScenarioPanel />
           <CustomPanel />
-          <ExportBar chartRef={chartRef} />
         </aside>
 
         {/* Chart preview area */}
-        <main ref={mainRef} className="flex-1 min-w-0 overflow-hidden flex items-center justify-center p-8">
+        <main ref={mainRef} className="relative flex-1 min-w-0 overflow-hidden flex items-center justify-center p-8 pb-20">
           <div
             className="transparency-grid no-export rounded-xl border border-gray-200 dark:border-gray-800 shadow-inner inline-block"
             style={{ transform: `scale(${chartScale})`, transformOrigin: 'center' }}
           >
             <Chart ref={chartRef} />
           </div>
+          <ExportBar chartRef={chartRef} />
         </main>
       </div>
     </div>
