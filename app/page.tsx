@@ -25,8 +25,9 @@ export default function Home() {
     const main = mainRef.current;
     if (!main) return;
     const padding = 64; // p-8 = 32px each side
+    const barHeight = 72; // floating export bar + bottom gap
     const availW = main.clientWidth - padding;
-    const availH = main.clientHeight - padding;
+    const availH = main.clientHeight - padding - barHeight;
     const scale = Math.min(availW / chartWidth, availH / chartHeight, 2);
     setChartScale(Math.max(scale, 0.5));
   }, [chartWidth, chartHeight]);
