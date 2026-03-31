@@ -39,7 +39,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
 
   return (
     <>
-      <div className="no-export absolute bottom-0 left-0 right-0 z-10 flex items-center justify-center gap-3 px-6 py-3 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-800/50">
+      <div className="no-export absolute bottom-4 left-4 right-4 z-10 flex items-center justify-center gap-3 px-6 py-3 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 rounded-xl shadow-sm">
         {/* Primary CTA */}
         <button
           onClick={() =>
