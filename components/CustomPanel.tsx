@@ -228,6 +228,16 @@ export default function CustomPanel() {
         <ToggleRow label="Connectors" checked={config.showConnectors} onChange={(v) => setConfig({ showConnectors: v })} />
         <ToggleRow label="Gradients" checked={config.showGradients} onChange={(v) => setConfig({ showGradients: v })} />
         <ToggleRow label="Shadows" checked={config.showShadows} onChange={(v) => setConfig({ showShadows: v })} />
+        <div className="flex items-center gap-2 pt-1">
+          <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Y-axis max</span>
+          <input
+            type="number"
+            value={config.yAxisMax ?? ''}
+            onChange={(e) => setConfig({ yAxisMax: e.target.value === '' ? null : parseFloat(e.target.value) })}
+            placeholder="Auto"
+            className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 tabular-nums"
+          />
+        </div>
       </Section>
 
       {/* Labels */}
@@ -244,8 +254,10 @@ export default function CustomPanel() {
               className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
             >
               <option value="top-right">Top Right</option>
+              <option value="top-center">Top Center</option>
               <option value="top-left">Top Left</option>
               <option value="bottom-right">Bottom Right</option>
+              <option value="bottom-center">Bottom Center</option>
               <option value="bottom-left">Bottom Left</option>
             </select>
           </div>

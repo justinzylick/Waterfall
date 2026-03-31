@@ -5,7 +5,7 @@ export type BarType = 'start' | 'increase' | 'decrease' | 'subtotal' | 'end';
 export type ValueFormat = 'full' | 'abbreviated' | 'percentage';
 export type NegativeFormat = 'minus' | 'parentheses';
 export type DeltaBase = 'start' | 'previous';
-export type LegendPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+export type LegendPosition = 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center';
 
 export interface DataRow {
   id: string;
@@ -54,6 +54,7 @@ export interface ChartConfig {
   boldDeltaLabels: boolean;
   startBarLabel: string;
   legendPosition: LegendPosition;
+  yAxisMax: number | null;
 }
 
 export interface ChartStore {
@@ -134,6 +135,7 @@ const DEFAULT_CONFIG: ChartConfig = {
   boldDeltaLabels: true,
   startBarLabel: '',
   legendPosition: 'top-right',
+  yAxisMax: null,
 };
 
 export const useChartData = create<ChartStore>((set) => ({

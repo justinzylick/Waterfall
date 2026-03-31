@@ -17,7 +17,7 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
 
   // Adaptive colors for dark/light mode
   const labelColor = isDarkMode ? '#E5E7EB' : config.colors.label;
-  const axisColor = isDarkMode ? '#9CA3AF' : '#6B7280';
+  const axisColor = isDarkMode ? '#D1D5DB' : '#9CA3AF';
   const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
   const subtitleColor = isDarkMode ? '#9CA3AF' : '#9CA3AF';
   const legendColor = isDarkMode ? '#D1D5DB' : '#9CA3AF';
@@ -273,7 +273,9 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
         {config.showLegend && (() => {
           const legendWidth = 240;
           const pos = config.legendPosition || 'top-right';
-          const lx = pos.includes('right')
+          const lx = pos.includes('center')
+            ? (config.chartWidth - legendWidth) / 2
+            : pos.includes('right')
             ? config.chartWidth - margin.right - legendWidth
             : margin.left;
           const ly = pos.includes('top')

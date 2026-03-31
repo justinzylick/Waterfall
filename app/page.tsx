@@ -40,9 +40,10 @@ export default function Home() {
           <Image
             src={isDarkMode ? '/diageo-logo-gold.svg' : '/diageo-logo-black.svg'}
             alt="Diageo"
-            width={32}
-            height={32}
+            width={40}
+            height={40}
             className="shrink-0"
+            style={{ width: 40, height: 40 }}
           />
           <div className="flex flex-col">
             <span className="text-sm font-bold tracking-tight leading-tight">
