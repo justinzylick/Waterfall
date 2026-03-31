@@ -139,10 +139,18 @@ const DEFAULT_CONFIG: ChartConfig = {
   yAxisMax: null,
 };
 
+function getInitialDarkMode(): boolean {
+  try {
+    return localStorage.getItem('waterfall-dark-mode') === 'true';
+  } catch {
+    return false;
+  }
+}
+
 export const useChartData = create<ChartStore>((set) => ({
   rows: EXAMPLE_DATA,
   config: DEFAULT_CONFIG,
-  isDarkMode: false,
+  isDarkMode: getInitialDarkMode(),
 
   addRow: () =>
     set((state) => ({
@@ -214,5 +222,9 @@ export const useChartData = create<ChartStore>((set) => ({
     set({ rows, config }),
 
   toggleDarkMode: () =>
-    set((state) => ({ isDarkMode: !state.isDarkMode })),
+    set((state) => {
+      const next = !state.isDarkMode;
+      try { localStorage.setItem('waterfall-dark-mode', String(next)); } catch {}
+      return { isDarkMode: next };
+    }),
 }));
