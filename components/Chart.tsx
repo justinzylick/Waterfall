@@ -270,8 +270,17 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
         )}
 
         {/* Legend */}
-        {config.showLegend && (
-          <g transform={`translate(${config.chartWidth - margin.right - 200}, ${margin.top - 20})`}>
+        {config.showLegend && (() => {
+          const legendWidth = 240;
+          const pos = config.legendPosition || 'top-right';
+          const lx = pos.includes('right')
+            ? config.chartWidth - margin.right - legendWidth
+            : margin.left;
+          const ly = pos.includes('top')
+            ? margin.top - 20
+            : config.chartHeight - 16;
+          return (
+          <g transform={`translate(${lx}, ${ly})`}>
             {[
               { label: 'Increase', color: config.colors.increase },
               { label: 'Decrease', color: config.colors.decrease },
@@ -298,7 +307,8 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
               </g>
             ))}
           </g>
-        )}
+          );
+        })()}
       </svg>
     </div>
   );

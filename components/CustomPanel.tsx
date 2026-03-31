@@ -235,6 +235,21 @@ export default function CustomPanel() {
         <ToggleRow label="Value labels" checked={config.showValueLabels} onChange={(v) => setConfig({ showValueLabels: v })} />
         <ToggleRow label="Delta labels" checked={config.showDeltaLabels} onChange={(v) => setConfig({ showDeltaLabels: v })} />
         <ToggleRow label="Legend" checked={config.showLegend} onChange={(v) => setConfig({ showLegend: v })} />
+        {config.showLegend && (
+          <div className="flex items-center gap-2 pl-2">
+            <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Position</span>
+            <select
+              value={config.legendPosition || 'top-right'}
+              onChange={(e) => setConfig({ legendPosition: e.target.value as 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' })}
+              className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
+            >
+              <option value="top-right">Top Right</option>
+              <option value="top-left">Top Left</option>
+              <option value="bottom-right">Bottom Right</option>
+              <option value="bottom-left">Bottom Left</option>
+            </select>
+          </div>
+        )}
         <ToggleRow label="Y-axis" checked={config.showYAxis} onChange={(v) => setConfig({ showYAxis: v })} />
 
         <div className="pt-2 pb-1">

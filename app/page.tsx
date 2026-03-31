@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useChartData } from '@/hooks/useChartData';
 import Chart from '@/components/Chart';
 import DataTable from '@/components/DataTable';
@@ -35,18 +36,22 @@ export default function Home() {
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
       {/* Header */}
       <header className="flex items-center justify-between px-6 py-3 border-b border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M2 12V6h2v6H2zm4 0V2h2v10H6zm4 0V8h2v4h-2z" fill="white" opacity="0.9" />
-            </svg>
+        <div className="flex items-center gap-3">
+          <Image
+            src={isDarkMode ? '/diageo-logo-gold.svg' : '/diageo-logo-black.svg'}
+            alt="Diageo"
+            width={32}
+            height={32}
+            className="shrink-0"
+          />
+          <div className="flex flex-col">
+            <span className="text-sm font-bold tracking-tight leading-tight">
+              Diageo SA Waterfall Builder
+            </span>
+            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium tracking-wide uppercase">
+              Strategic Accounts & Customer Development
+            </span>
           </div>
-          <span className="text-lg font-bold tracking-tight">
-            Cascade
-          </span>
-          <span className="text-xs text-gray-400 dark:text-gray-600 font-medium">
-            Waterfall Charts
-          </span>
         </div>
 
         <button

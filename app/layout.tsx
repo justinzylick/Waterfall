@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Cascade — Beautiful Waterfall Charts",
+  title: "Diageo SA Waterfall Builder",
   description: "Create presentation-ready waterfall charts with transparent backgrounds. Paste from Excel, customize, and copy to clipboard.",
 };
 

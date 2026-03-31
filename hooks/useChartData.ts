@@ -5,6 +5,7 @@ export type BarType = 'start' | 'increase' | 'decrease' | 'subtotal' | 'end';
 export type ValueFormat = 'full' | 'abbreviated' | 'percentage';
 export type NegativeFormat = 'minus' | 'parentheses';
 export type DeltaBase = 'start' | 'previous';
+export type LegendPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 
 export interface DataRow {
   id: string;
@@ -52,6 +53,7 @@ export interface ChartConfig {
   boldValueLabels: boolean;
   boldDeltaLabels: boolean;
   startBarLabel: string;
+  legendPosition: LegendPosition;
 }
 
 export interface ChartStore {
@@ -109,7 +111,7 @@ const DEFAULT_CONFIG: ChartConfig = {
   },
   title: 'Waterfall Analysis',
   subtitle: '',
-  barWidth: 0.6,
+  barWidth: 0.75,
   barGap: 0.1,
   showConnectors: true,
   showGradients: true,
@@ -123,14 +125,15 @@ const DEFAULT_CONFIG: ChartConfig = {
   currencySymbol: '$',
   decimalPlaces: 1,
   deltaBase: 'start',
-  chartWidth: 720,
+  chartWidth: 840,
   chartHeight: 460,
-  boldXAxis: false,
-  boldYAxis: false,
-  boldLegend: false,
+  boldXAxis: true,
+  boldYAxis: true,
+  boldLegend: true,
   boldValueLabels: true,
-  boldDeltaLabels: false,
+  boldDeltaLabels: true,
   startBarLabel: '',
+  legendPosition: 'top-right',
 };
 
 export const useChartData = create<ChartStore>((set) => ({
@@ -167,7 +170,7 @@ export const useChartData = create<ChartStore>((set) => ({
   loadExample: () =>
     set({
       rows: EXAMPLE_DATA.map((r) => ({ ...r, id: genId() })),
-      config: { ...DEFAULT_CONFIG, title: 'Revenue Bridge — F26 to F27' },
+      config: { ...DEFAULT_CONFIG, title: 'Revenue Bridge \u2014 F26 to F27' },
     }),
 
   pasteData: (text) =>
