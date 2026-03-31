@@ -118,7 +118,7 @@ const DEFAULT_CONFIG: ChartConfig = {
   showGradients: true,
   showShadows: false,
   showValueLabels: true,
-  showDeltaLabels: false,
+  showDeltaLabels: true,
   showLegend: false,
   showYAxis: true,
   valueFormat: 'abbreviated',

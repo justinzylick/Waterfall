@@ -134,7 +134,7 @@ export default function CustomPanel() {
       </h2>
 
       {/* Title / Subtitle */}
-      <Section title="Title" defaultOpen={true}>
+      <Section title="Title" defaultOpen={false}>
         <input
           type="text"
           value={config.title}
@@ -152,7 +152,7 @@ export default function CustomPanel() {
       </Section>
 
       {/* Colors */}
-      <Section title="Colors" defaultOpen={true}>
+      <Section title="Colors" defaultOpen={false}>
         <ColorPicker
           label="Increase"
           value={config.colors.increase}
