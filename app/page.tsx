@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { useChartData } from '@/hooks/useChartData';
 import Chart from '@/components/Chart';
@@ -10,11 +10,34 @@ import ExportBar from '@/components/ExportBar';
 
 export default function Home() {
   const chartRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
   const isDarkMode = useChartData((s) => s.isDarkMode);
   const toggleDarkMode = useChartData((s) => s.toggleDarkMode);
+  const chartWidth = useChartData((s) => s.config.chartWidth);
+  const chartHeight = useChartData((s) => s.config.chartHeight);
   const [mounted, setMounted] = useState(false);
+  const [chartScale, setChartScale] = useState(1);
 
   useEffect(() => setMounted(true), []);
+
+  const updateScale = useCallback(() => {
+    const main = mainRef.current;
+    if (!main) return;
+    const padding = 64; // p-8 = 32px each side
+    const availW = main.clientWidth - padding;
+    const availH = main.clientHeight - padding;
+    const scale = Math.min(availW / chartWidth, availH / chartHeight, 2);
+    setChartScale(Math.max(scale, 0.5));
+  }, [chartWidth, chartHeight]);
+
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main) return;
+    updateScale();
+    const ro = new ResizeObserver(updateScale);
+    ro.observe(main);
+    return () => ro.disconnect();
+  }, [updateScale, mounted]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -93,8 +116,11 @@ export default function Home() {
         </aside>
 
         {/* Chart preview area */}
-        <main className="flex-1 min-w-0 overflow-auto flex items-center justify-center p-8">
-          <div className="transparency-grid no-export rounded-xl border border-gray-200 dark:border-gray-800 shadow-inner inline-block">
+        <main ref={mainRef} className="flex-1 min-w-0 overflow-hidden flex items-center justify-center p-8">
+          <div
+            className="transparency-grid no-export rounded-xl border border-gray-200 dark:border-gray-800 shadow-inner inline-block"
+            style={{ transform: `scale(${chartScale})`, transformOrigin: 'center' }}
+          >
             <Chart ref={chartRef} />
           </div>
         </main>
