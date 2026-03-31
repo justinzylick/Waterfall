@@ -84,7 +84,7 @@ export function computeWaterfallLayout(
   }> = [];
 
   for (const row of rows) {
-    if (row.type === 'start' || row.type === 'end' || row.type === 'subtotal') {
+    if (row.type === 'start') {
       const barStart = 0;
       const barEnd = row.value;
       barData.push({
@@ -96,6 +96,18 @@ export function computeWaterfallLayout(
         runningEnd: barEnd,
       });
       runningTotal = row.value;
+    } else if (row.type === 'end' || row.type === 'subtotal') {
+      // Auto-calculate from running total
+      const barStart = 0;
+      const barEnd = runningTotal;
+      barData.push({
+        id: row.id,
+        label: row.label,
+        value: runningTotal,
+        type: row.type,
+        runningStart: barStart,
+        runningEnd: barEnd,
+      });
     } else {
       const barStart = runningTotal;
       const barEnd = runningTotal + row.value;

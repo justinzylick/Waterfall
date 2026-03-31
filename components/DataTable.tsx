@@ -32,11 +32,13 @@ function SortableRow({
   onUpdate,
   onRemove,
   canRemove,
+  computedTotal,
 }: {
   row: DataRow;
   onUpdate: (id: string, updates: Partial<Omit<DataRow, 'id'>>) => void;
   onRemove: (id: string) => void;
   canRemove: boolean;
+  computedTotal: number;
 }) {
   const {
     attributes,
@@ -95,15 +97,22 @@ function SortableRow({
           e.target.style.height = '26px';
         }}
         rows={1}
-        className="flex-1 min-w-0 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors resize-none overflow-hidden leading-tight"
+        wrap="off"
+        className="flex-1 min-w-0 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors resize-none overflow-hidden leading-tight whitespace-nowrap"
         style={{ height: '26px' }}
       />
-      <input
-        type="number"
-        value={row.value}
-        onChange={(e) => onUpdate(row.id, { value: parseFloat(e.target.value) || 0 })}
-        className="w-28 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors tabular-nums text-right"
-      />
+      {row.type === 'end' || row.type === 'subtotal' ? (
+        <div className="w-28 text-sm text-gray-400 dark:text-gray-500 px-2 py-1 tabular-nums text-right italic" title="Auto-calculated">
+          {computedTotal.toLocaleString()}
+        </div>
+      ) : (
+        <input
+          type="number"
+          value={row.value}
+          onChange={(e) => onUpdate(row.id, { value: parseFloat(e.target.value) || 0 })}
+          className="w-28 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors tabular-nums text-right"
+        />
+      )}
       <select
         value={row.type}
         onChange={(e) => onUpdate(row.id, { type: e.target.value as BarType })}
@@ -216,15 +225,28 @@ export default function DataTable() {
           strategy={verticalListSortingStrategy}
         >
           <div>
-            {rows.map((row) => (
-              <SortableRow
-                key={row.id}
-                row={row}
-                onUpdate={updateRow}
-                onRemove={removeRow}
-                canRemove={rows.length > 1}
-              />
-            ))}
+            {rows.map((row, idx) => {
+              // Compute running total up to this row for end/subtotal display
+              let runningTotal = 0;
+              for (let i = 0; i < idx; i++) {
+                const r = rows[i];
+                if (r.type === 'start') runningTotal = r.value;
+                else if (r.type !== 'end' && r.type !== 'subtotal') runningTotal += r.value;
+              }
+              if (row.type === 'start') runningTotal = row.value;
+              else if (row.type !== 'end' && row.type !== 'subtotal') runningTotal += row.value;
+
+              return (
+                <SortableRow
+                  key={row.id}
+                  row={row}
+                  onUpdate={updateRow}
+                  onRemove={removeRow}
+                  canRemove={rows.length > 1}
+                  computedTotal={runningTotal}
+                />
+              );
+            })}
           </div>
         </SortableContext>
       </DndContext>

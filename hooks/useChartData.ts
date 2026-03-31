@@ -93,7 +93,7 @@ const EXAMPLE_DATA: DataRow[] = [
   { id: genId(), label: 'Opportunities', value: 2000000, type: 'increase' },
   { id: genId(), label: 'YR 1 Innovation\n(F27 launches)', value: 700000, type: 'increase' },
   { id: genId(), label: 'YR 2 Innovation\n(F26 launches)', value: -250000, type: 'decrease' },
-  { id: genId(), label: 'F27 H1 RSV\nProjection', value: 98450000, type: 'end' },
+  { id: genId(), label: 'F27 H1 RSV\nProjection', value: 0, type: 'end' },
 ];
 
 const DEFAULT_CONFIG: ChartConfig = {
