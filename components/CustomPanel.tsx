@@ -74,11 +74,13 @@ function SliderRow({
   onChange: (v: number) => void;
   suffix?: string;
 }) {
+  const fieldName = `slider-${label.toLowerCase().replace(/\s+/g, '-')}`;
   return (
     <div className="flex items-center gap-2">
       <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">{label}</span>
       <input
         type="range"
+        name={fieldName}
         min={min}
         max={max}
         step={step}
@@ -137,6 +139,7 @@ export default function CustomPanel() {
       <Section title="Title" defaultOpen={false}>
         <input
           type="text"
+          name="chart-title"
           value={config.title}
           onChange={(e) => setConfig({ title: e.target.value })}
           placeholder="Chart title..."
@@ -144,6 +147,7 @@ export default function CustomPanel() {
         />
         <input
           type="text"
+          name="chart-subtitle"
           value={config.subtitle}
           onChange={(e) => setConfig({ subtitle: e.target.value })}
           placeholder="Subtitle (optional)..."
@@ -203,6 +207,7 @@ export default function CustomPanel() {
         <div className="flex items-center gap-2">
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Font</span>
           <select
+            name="font-family"
             value={config.fontFamily}
             onChange={(e) => setConfig({ fontFamily: e.target.value })}
             className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
@@ -232,6 +237,7 @@ export default function CustomPanel() {
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Y-axis max</span>
           <input
             type="number"
+            name="y-axis-max"
             value={config.yAxisMax ?? ''}
             onChange={(e) => setConfig({ yAxisMax: e.target.value === '' ? null : parseFloat(e.target.value) })}
             placeholder="Auto"
@@ -249,6 +255,7 @@ export default function CustomPanel() {
           <div className="flex items-center gap-2 pl-2">
             <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Position</span>
             <select
+              name="legend-position"
               value={config.legendPosition || 'top-right'}
               onChange={(e) => setConfig({ legendPosition: e.target.value as 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' })}
               className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
@@ -278,6 +285,7 @@ export default function CustomPanel() {
         </div>
         <input
           type="text"
+          name="start-bar-label"
           value={config.startBarLabel}
           onChange={(e) => setConfig({ startBarLabel: e.target.value })}
           placeholder="e.g. F26 H1 Trend"
@@ -287,6 +295,7 @@ export default function CustomPanel() {
         <div className="flex items-center gap-2 pt-1">
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Format</span>
           <select
+            name="value-format"
             value={config.valueFormat}
             onChange={(e) => setConfig({ valueFormat: e.target.value as 'full' | 'abbreviated' | 'percentage' })}
             className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
@@ -300,6 +309,7 @@ export default function CustomPanel() {
         <div className="flex items-center gap-2">
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Negatives</span>
           <select
+            name="negative-format"
             value={config.negativeFormat}
             onChange={(e) => setConfig({ negativeFormat: e.target.value as 'minus' | 'parentheses' })}
             className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
@@ -333,6 +343,7 @@ export default function CustomPanel() {
         <div className="flex items-center gap-2">
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Delta base</span>
           <select
+            name="delta-base"
             value={config.deltaBase}
             onChange={(e) => setConfig({ deltaBase: e.target.value as 'start' | 'previous' })}
             className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"

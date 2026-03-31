@@ -10,6 +10,7 @@ interface ColorPickerProps {
 
 export default function ColorPicker({ label, value, onChange }: ColorPickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const fieldName = `color-${label.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
     <div className="flex items-center gap-2">
@@ -21,6 +22,7 @@ export default function ColorPicker({ label, value, onChange }: ColorPickerProps
       <input
         ref={inputRef}
         type="color"
+        name={fieldName}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="sr-only"
@@ -28,6 +30,7 @@ export default function ColorPicker({ label, value, onChange }: ColorPickerProps
       <span className="text-xs text-gray-500 dark:text-gray-400 flex-1">{label}</span>
       <input
         type="text"
+        name={`${fieldName}-hex`}
         value={value}
         onChange={(e) => {
           if (/^#[0-9A-Fa-f]{0,6}$/.test(e.target.value)) {

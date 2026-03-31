@@ -83,6 +83,7 @@ function SortableRow({
         </svg>
       </button>
       <textarea
+        name={`label-${row.id}`}
         value={row.label}
         onChange={(e) => {
           onUpdate(row.id, { label: e.target.value });
@@ -108,12 +109,14 @@ function SortableRow({
       ) : (
         <input
           type="number"
+          name={`value-${row.id}`}
           value={row.value}
           onChange={(e) => onUpdate(row.id, { value: parseFloat(e.target.value) || 0 })}
           className="w-28 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors tabular-nums text-right"
         />
       )}
       <select
+        name={`type-${row.id}`}
         value={row.type}
         onChange={(e) => onUpdate(row.id, { type: e.target.value as BarType })}
         className={`w-20 bg-transparent text-xs ${typeColor} border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-1 py-1 transition-colors cursor-pointer`}
@@ -254,6 +257,7 @@ export default function DataTable() {
       {/* Hidden textarea for paste fallback */}
       <textarea
         ref={fileInputRef}
+        name="paste-data"
         className="hidden w-full h-20 text-xs p-2 border border-gray-200 dark:border-gray-700 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 resize-none"
         placeholder="Paste your data here (tab-separated: Label, Value, Type)..."
         onPaste={handleManualPaste}

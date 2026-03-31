@@ -108,6 +108,7 @@ export default function ScenarioPanel() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+                name="scenario-name"
                 placeholder="Scenario name..."
                 autoFocus
                 className="flex-1 min-w-0 text-xs bg-transparent text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 focus:border-blue-400 focus:outline-none"
