@@ -90,7 +90,7 @@ function SortableRow({
         type="number"
         value={row.value}
         onChange={(e) => onUpdate(row.id, { value: parseFloat(e.target.value) || 0 })}
-        className="w-24 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors tabular-nums text-right"
+        className="w-28 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors tabular-nums text-right"
       />
       <select
         value={row.type}
@@ -188,7 +188,7 @@ export default function DataTable() {
       <div className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider px-0">
         <div className="w-5 shrink-0" />
         <div className="flex-1 px-2 font-medium">Label</div>
-        <div className="w-24 px-2 font-medium text-right">Value</div>
+        <div className="w-28 px-2 font-medium text-right">Value</div>
         <div className="w-20 px-1 font-medium">Type</div>
         <div className="w-5 shrink-0" />
       </div>
