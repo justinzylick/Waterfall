@@ -133,7 +133,7 @@ const DEFAULT_CONFIG: ChartConfig = {
   boldLegend: true,
   boldValueLabels: true,
   boldDeltaLabels: true,
-  startBarLabel: '',
+  startBarLabel: '-0.7%',
   legendPosition: 'top-right',
   yAxisMax: null,
 };

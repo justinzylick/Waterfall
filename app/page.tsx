@@ -38,12 +38,22 @@ export default function Home() {
       <header className="flex items-center justify-between px-6 py-3 border-b border-gray-100 dark:border-gray-800">
         <div className="flex items-center gap-3">
           <Image
-            src={isDarkMode ? '/diageo-logo-gold.svg' : '/diageo-logo-black.svg'}
+            src="/diageo-logo-black.svg"
             alt="Diageo"
             width={40}
             height={40}
-            className="shrink-0"
+            className={`shrink-0 ${isDarkMode ? 'hidden' : 'block'}`}
             style={{ width: 40, height: 40 }}
+            unoptimized
+          />
+          <Image
+            src="/diageo-logo-gold.svg"
+            alt="Diageo"
+            width={40}
+            height={40}
+            className={`shrink-0 ${isDarkMode ? 'block' : 'hidden'}`}
+            style={{ width: 40, height: 40 }}
+            unoptimized
           />
           <div className="flex flex-col">
             <span className="text-sm font-bold tracking-tight leading-tight">
@@ -76,7 +86,7 @@ export default function Home() {
       {/* Main layout */}
       <div className="flex h-[calc(100vh-52px)]">
         {/* Left sidebar */}
-        <aside className="w-[340px] shrink-0 border-r border-gray-100 dark:border-gray-800 overflow-y-auto p-4 space-y-4">
+        <aside className="w-[400px] shrink-0 border-r border-gray-100 dark:border-gray-800 overflow-y-auto p-4 space-y-4">
           <DataTable />
           <CustomPanel />
           <ExportBar chartRef={chartRef} />
