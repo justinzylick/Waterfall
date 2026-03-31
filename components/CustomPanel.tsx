@@ -13,6 +13,8 @@ const PALETTES: Record<string, { increase: string; decrease: string; total: stri
 
 const FONTS = [
   'Inter',
+  'Aptos',
+  'URW Geometric',
   'Barlow',
   'Outfit',
   'Plus Jakarta Sans',
@@ -207,8 +209,8 @@ export default function CustomPanel() {
         </div>
       </Section>
 
-      {/* Typography */}
-      <Section title="Typography">
+      {/* Fonts */}
+      <Section title="Fonts">
         <div className="flex items-center gap-2">
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Font</span>
           <select
