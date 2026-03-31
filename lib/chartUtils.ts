@@ -57,10 +57,14 @@ export function computeWaterfallLayout(
     };
   }
 
+  // Compute bottom margin based on max label lines
+  const maxLabelLines = Math.max(1, ...rows.map((r) => r.label.split('\n').length));
+  const bottomForLabels = 16 + maxLabelLines * 14; // 16px gap + 14px per line
+
   const margin = {
     top: config.title ? 70 : 40,
     right: 30,
-    bottom: 80,
+    bottom: bottomForLabels,
     left: config.showYAxis ? 80 : 30,
   };
 
