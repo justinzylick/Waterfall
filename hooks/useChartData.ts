@@ -139,18 +139,10 @@ const DEFAULT_CONFIG: ChartConfig = {
   yAxisMax: null,
 };
 
-function getInitialDarkMode(): boolean {
-  try {
-    return localStorage.getItem('waterfall-dark-mode') === 'true';
-  } catch {
-    return false;
-  }
-}
-
 export const useChartData = create<ChartStore>((set) => ({
   rows: EXAMPLE_DATA,
   config: DEFAULT_CONFIG,
-  isDarkMode: getInitialDarkMode(),
+  isDarkMode: false,
 
   addRow: () =>
     set((state) => ({

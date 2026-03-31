@@ -19,7 +19,16 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [chartScale, setChartScale] = useState(1);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    // Hydrate dark mode from localStorage on mount
+    try {
+      const saved = localStorage.getItem('waterfall-dark-mode');
+      if (saved === 'true' && !useChartData.getState().isDarkMode) {
+        toggleDarkMode();
+      }
+    } catch {}
+    setMounted(true);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateScale = useCallback(() => {
     const main = mainRef.current;
