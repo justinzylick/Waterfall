@@ -13,6 +13,11 @@ const PALETTES: Record<string, { increase: string; decrease: string; total: stri
 
 const FONTS = [
   'Inter',
+  'Barlow',
+  'Outfit',
+  'Plus Jakarta Sans',
+  'Figtree',
+  'Source Sans 3',
   'DM Sans',
   'IBM Plex Sans',
   'Roboto',
