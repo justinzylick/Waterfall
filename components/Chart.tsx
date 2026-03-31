@@ -101,6 +101,7 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
                   textAnchor="end"
                   dominantBaseline="middle"
                   fontSize={config.fontSize.axis}
+                  fontWeight={config.boldYAxis ? 700 : 400}
                   fill={legendColor}
                 >
                   {formatAxisValue(tick, config.currencySymbol)}
@@ -162,7 +163,7 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
                     }
                     textAnchor="middle"
                     fontSize={config.fontSize.labels}
-                    fontWeight={500}
+                    fontWeight={config.boldValueLabels ? 700 : 500}
                     fill={labelColor}
                   >
                     {bar.formattedValue}
@@ -180,7 +181,7 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
                       textAnchor="middle"
                       dominantBaseline="middle"
                       fontSize={config.fontSize.labels - 1}
-                      fontWeight={500}
+                      fontWeight={config.boldDeltaLabels ? 700 : 500}
                       fill="#fff"
                       opacity={0.9}
                     >
@@ -195,7 +196,7 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
                     y={bar.yTop + 20}
                     textAnchor="middle"
                     fontSize={config.fontSize.labels - 1}
-                    fontWeight={600}
+                    fontWeight={config.boldDeltaLabels ? 700 : 600}
                     fill="#fff"
                     opacity={0.85}
                   >
@@ -212,12 +213,29 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
                       y={lineIdx * (config.fontSize.axis + 2)}
                       textAnchor="middle"
                       fontSize={config.fontSize.axis}
+                      fontWeight={config.boldXAxis ? 700 : 400}
                       fill={axisColor}
                     >
                       {line}
                     </text>
                   ))}
                 </g>
+
+                {/* Start bar trend label */}
+                {bar.type === 'start' && config.startBarLabel && (
+                  <text
+                    x={bar.x + bar.barWidth / 2}
+                    y={bar.yTop + (bar.yBottom - bar.yTop) / 2}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={config.fontSize.labels - 1}
+                    fontWeight={600}
+                    fill="#fff"
+                    opacity={0.9}
+                  >
+                    {config.startBarLabel}
+                  </text>
+                )}
               </g>
             );
           })}
@@ -272,6 +290,7 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
                   x={16}
                   y={5}
                   fontSize={10}
+                  fontWeight={config.boldLegend ? 700 : 400}
                   fill={legendColor}
                 >
                   {item.label}

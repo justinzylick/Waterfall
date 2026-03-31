@@ -46,6 +46,12 @@ export interface ChartConfig {
   deltaBase: DeltaBase;
   chartWidth: number;
   chartHeight: number;
+  boldXAxis: boolean;
+  boldYAxis: boolean;
+  boldLegend: boolean;
+  boldValueLabels: boolean;
+  boldDeltaLabels: boolean;
+  startBarLabel: string;
 }
 
 export interface ChartStore {
@@ -119,6 +125,12 @@ const DEFAULT_CONFIG: ChartConfig = {
   deltaBase: 'start',
   chartWidth: 720,
   chartHeight: 460,
+  boldXAxis: false,
+  boldYAxis: false,
+  boldLegend: false,
+  boldValueLabels: true,
+  boldDeltaLabels: false,
+  startBarLabel: '',
 };
 
 export const useChartData = create<ChartStore>((set) => ({

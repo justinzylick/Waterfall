@@ -237,6 +237,26 @@ export default function CustomPanel() {
         <ToggleRow label="Legend" checked={config.showLegend} onChange={(v) => setConfig({ showLegend: v })} />
         <ToggleRow label="Y-axis" checked={config.showYAxis} onChange={(v) => setConfig({ showYAxis: v })} />
 
+        <div className="pt-2 pb-1">
+          <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">Bold</span>
+        </div>
+        <ToggleRow label="X-axis labels" checked={config.boldXAxis} onChange={(v) => setConfig({ boldXAxis: v })} />
+        <ToggleRow label="Y-axis labels" checked={config.boldYAxis} onChange={(v) => setConfig({ boldYAxis: v })} />
+        <ToggleRow label="Value labels" checked={config.boldValueLabels} onChange={(v) => setConfig({ boldValueLabels: v })} />
+        <ToggleRow label="Delta labels" checked={config.boldDeltaLabels} onChange={(v) => setConfig({ boldDeltaLabels: v })} />
+        <ToggleRow label="Legend" checked={config.boldLegend} onChange={(v) => setConfig({ boldLegend: v })} />
+
+        <div className="pt-2">
+          <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">Start bar label</span>
+        </div>
+        <input
+          type="text"
+          value={config.startBarLabel}
+          onChange={(e) => setConfig({ startBarLabel: e.target.value })}
+          placeholder="e.g. F26 H1 Trend"
+          className="w-full text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-lg px-2.5 py-1.5 focus:border-blue-400 focus:outline-none"
+        />
+
         <div className="flex items-center gap-2 pt-1">
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Format</span>
           <select
