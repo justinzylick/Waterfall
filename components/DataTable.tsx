@@ -80,11 +80,23 @@ function SortableRow({
           <circle cx="10" cy="11" r="1.2" />
         </svg>
       </button>
-      <input
-        type="text"
+      <textarea
         value={row.label}
-        onChange={(e) => onUpdate(row.id, { label: e.target.value })}
-        className="flex-1 min-w-0 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors"
+        onChange={(e) => {
+          onUpdate(row.id, { label: e.target.value });
+          e.target.style.height = 'auto';
+          e.target.style.height = e.target.scrollHeight + 'px';
+        }}
+        onFocus={(e) => {
+          e.target.style.height = 'auto';
+          e.target.style.height = e.target.scrollHeight + 'px';
+        }}
+        onBlur={(e) => {
+          e.target.style.height = '26px';
+        }}
+        rows={1}
+        className="flex-1 min-w-0 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors resize-none overflow-hidden leading-tight"
+        style={{ height: '26px' }}
       />
       <input
         type="number"

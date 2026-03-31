@@ -49,8 +49,8 @@
   background: #4b5563;
 }
 
-/* Smooth transitions for chart bars */
-svg rect, svg path, svg line, svg text {
+/* Smooth transitions for chart elements */
+svg rect, svg line, svg text {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 

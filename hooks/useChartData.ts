@@ -71,6 +71,7 @@ export interface ChartStore {
   setConfig: (updates: Partial<ChartConfig>) => void;
   setColors: (updates: Partial<ChartConfig['colors']>) => void;
   setFontSize: (updates: Partial<ChartConfig['fontSize']>) => void;
+  loadScenario: (rows: DataRow[], config: ChartConfig) => void;
   toggleDarkMode: () => void;
 }
 
@@ -208,6 +209,9 @@ export const useChartData = create<ChartStore>((set) => ({
         fontSize: { ...state.config.fontSize, ...updates },
       },
     })),
+
+  loadScenario: (rows, config) =>
+    set({ rows, config }),
 
   toggleDarkMode: () =>
     set((state) => ({ isDarkMode: !state.isDarkMode })),

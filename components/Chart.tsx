@@ -2,7 +2,7 @@
 
 import { useMemo, forwardRef } from 'react';
 import { useChartData } from '@/hooks/useChartData';
-import { computeWaterfallLayout, roundedBarPath } from '@/lib/chartUtils';
+import { computeWaterfallLayout } from '@/lib/chartUtils';
 import { formatAxisValue } from '@/lib/formatUtils';
 
 const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
@@ -136,16 +136,12 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
 
             return (
               <g key={bar.id}>
-                <path
-                  d={roundedBarPath(
-                    bar.x,
-                    bar.yTop,
-                    bar.barWidth,
-                    bar.height,
-                    3,
-                    bar.type,
-                    bar.isNegative
-                  )}
+                <rect
+                  x={bar.x}
+                  y={bar.yTop}
+                  width={bar.barWidth}
+                  height={bar.height}
+                  rx={3}
                   fill={fillColor}
                   filter={config.showShadows ? 'url(#bar-shadow)' : undefined}
                 />

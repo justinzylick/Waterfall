@@ -7,6 +7,7 @@ import Chart from '@/components/Chart';
 import DataTable from '@/components/DataTable';
 import CustomPanel from '@/components/CustomPanel';
 import ExportBar from '@/components/ExportBar';
+import ScenarioPanel from '@/components/ScenarioPanel';
 
 export default function Home() {
   const chartRef = useRef<HTMLDivElement>(null);
@@ -127,6 +128,7 @@ export default function Home() {
         {/* Left sidebar */}
         <aside className="w-[400px] shrink-0 border-r border-gray-100 dark:border-gray-800 overflow-y-auto p-4 space-y-4">
           <DataTable />
+          <ScenarioPanel />
           <CustomPanel />
           <ExportBar chartRef={chartRef} />
         </aside>
