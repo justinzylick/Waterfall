@@ -21,9 +21,10 @@ export default function Home() {
 
   useEffect(() => {
     // Hydrate dark mode from localStorage on mount
+    // Default is dark; only switch to light if user explicitly saved that preference
     try {
       const saved = localStorage.getItem('waterfall-dark-mode');
-      if (saved === 'true' && !useChartData.getState().isDarkMode) {
+      if (saved === 'false' && useChartData.getState().isDarkMode) {
         toggleDarkMode();
       }
     } catch {}

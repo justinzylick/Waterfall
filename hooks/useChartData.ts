@@ -142,7 +142,7 @@ const DEFAULT_CONFIG: ChartConfig = {
 export const useChartData = create<ChartStore>((set) => ({
   rows: EXAMPLE_DATA,
   config: DEFAULT_CONFIG,
-  isDarkMode: false,
+  isDarkMode: true,
 
   addRow: () =>
     set((state) => ({
