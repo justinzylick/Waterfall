@@ -6,12 +6,17 @@ export type ValueFormat = 'full' | 'abbreviated' | 'percentage';
 export type NegativeFormat = 'minus' | 'parentheses';
 export type DeltaBase = 'start' | 'previous';
 export type LegendPosition = 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center';
+export type SortOrder = 'none' | 'magnitude-desc' | 'magnitude-asc';
+
+export type AnnotationPosition = 'above' | 'below';
 
 export interface DataRow {
   id: string;
   label: string;
   value: number;
   type: BarType;
+  annotation?: string;
+  annotationPosition?: AnnotationPosition;
 }
 
 export interface ChartConfig {
@@ -55,17 +60,21 @@ export interface ChartConfig {
   startBarLabel: string;
   legendPosition: LegendPosition;
   yAxisMax: number | null;
+  showAnnotations: boolean;
 }
 
 export interface ChartStore {
   rows: DataRow[];
   config: ChartConfig;
   isDarkMode: boolean;
+  sortOrder: SortOrder;
+  originalRows: DataRow[] | null;
 
   addRow: () => void;
   removeRow: (id: string) => void;
   updateRow: (id: string, updates: Partial<Omit<DataRow, 'id'>>) => void;
   reorderRows: (oldIndex: number, newIndex: number) => void;
+  sortRows: (order: SortOrder) => void;
   loadExample: () => void;
   pasteData: (text: string) => void;
   setConfig: (updates: Partial<ChartConfig>) => void;
@@ -90,7 +99,7 @@ const EXAMPLE_DATA: DataRow[] = [
   { id: genId(), label: 'F26 H1 RSV', value: 100000000, type: 'start' },
   { id: genId(), label: 'L24W Trend', value: -2500000, type: 'decrease' },
   { id: genId(), label: 'Risk', value: -1500000, type: 'decrease' },
-  { id: genId(), label: 'Opportunities', value: 2000000, type: 'increase' },
+  { id: genId(), label: 'Opportunities', value: 2000000, type: 'increase', annotation: 'Distribution gains' },
   { id: genId(), label: 'YR 1 Innovation\n(F27 launches)', value: 700000, type: 'increase' },
   { id: genId(), label: 'YR 2 Innovation\n(F26 launches)', value: -250000, type: 'decrease' },
   { id: genId(), label: 'F27 H1 RSV\nProjection', value: 0, type: 'end' },
@@ -137,12 +146,15 @@ const DEFAULT_CONFIG: ChartConfig = {
   startBarLabel: '-0.7%',
   legendPosition: 'top-right',
   yAxisMax: null,
+  showAnnotations: true,
 };
 
 export const useChartData = create<ChartStore>((set) => ({
   rows: EXAMPLE_DATA,
   config: DEFAULT_CONFIG,
   isDarkMode: true,
+  sortOrder: 'none' as SortOrder,
+  originalRows: null,
 
   addRow: () =>
     set((state) => ({
@@ -150,11 +162,15 @@ export const useChartData = create<ChartStore>((set) => ({
         ...state.rows,
         { id: genId(), label: 'New Item', value: 0, type: 'increase' },
       ],
+      sortOrder: 'none' as SortOrder,
+      originalRows: null,
     })),
 
   removeRow: (id) =>
     set((state) => ({
       rows: state.rows.filter((r) => r.id !== id),
+      sortOrder: 'none' as SortOrder,
+      originalRows: null,
     })),
 
   updateRow: (id, updates) =>
@@ -167,13 +183,55 @@ export const useChartData = create<ChartStore>((set) => ({
       const newRows = [...state.rows];
       const [removed] = newRows.splice(oldIndex, 1);
       newRows.splice(newIndex, 0, removed);
-      return { rows: newRows };
+      return { rows: newRows, sortOrder: 'none' as SortOrder, originalRows: null };
+    }),
+
+  sortRows: (order) =>
+    set((state) => {
+      if (order === 'none') {
+        return {
+          rows: state.originalRows ? state.originalRows : state.rows,
+          sortOrder: 'none' as SortOrder,
+          originalRows: null,
+        };
+      }
+
+      // Snapshot original order on first sort
+      const originalRows = state.originalRows || [...state.rows];
+      // Always sort from original order to avoid compounding sorts
+      const newRows = [...originalRows];
+
+      // Find indices of change bars (increase/decrease)
+      const changeIndices: number[] = [];
+      const changeBars: DataRow[] = [];
+      newRows.forEach((r, i) => {
+        if (r.type === 'increase' || r.type === 'decrease') {
+          changeIndices.push(i);
+          changeBars.push(r);
+        }
+      });
+
+      // Sort change bars by absolute value
+      changeBars.sort((a, b) =>
+        order === 'magnitude-desc'
+          ? Math.abs(b.value) - Math.abs(a.value)
+          : Math.abs(a.value) - Math.abs(b.value)
+      );
+
+      // Place sorted bars back at their original positions
+      changeIndices.forEach((idx, i) => {
+        newRows[idx] = changeBars[i];
+      });
+
+      return { rows: newRows, sortOrder: order, originalRows };
     }),
 
   loadExample: () =>
     set({
       rows: EXAMPLE_DATA.map((r) => ({ ...r, id: genId() })),
       config: { ...DEFAULT_CONFIG, title: 'Revenue Bridge \u2014 F26 to F27' },
+      sortOrder: 'none' as SortOrder,
+      originalRows: null,
     }),
 
   pasteData: (text) =>
@@ -185,8 +243,9 @@ export const useChartData = create<ChartStore>((set) => ({
         label: p.label,
         value: p.value,
         type: (p.type as BarType) || autoDetectType(p.value, i, parsed.length),
+        annotation: p.annotation,
       }));
-      return { rows };
+      return { rows, sortOrder: 'none' as SortOrder, originalRows: null };
     }),
 
   setConfig: (updates) =>
@@ -211,7 +270,7 @@ export const useChartData = create<ChartStore>((set) => ({
     })),
 
   loadScenario: (rows, config) =>
-    set({ rows, config }),
+    set({ rows, config, sortOrder: 'none' as SortOrder, originalRows: null }),
 
   toggleDarkMode: () =>
     set((state) => {

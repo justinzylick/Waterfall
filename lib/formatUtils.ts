@@ -82,6 +82,7 @@ export interface ParsedRow {
   label: string;
   value: number;
   type?: string;
+  annotation?: string;
 }
 
 export function parsePastedData(text: string): ParsedRow[] {
@@ -103,12 +104,14 @@ export function parsePastedData(text: string): ParsedRow[] {
     const finalValue = isNegative ? -Math.abs(value) : value;
 
     const type = parts[2]?.trim().toLowerCase();
+    const annotation = parts[3]?.trim() || undefined;
     rows.push({
       label,
       value: finalValue,
       type: type && ['start', 'increase', 'decrease', 'subtotal', 'end'].includes(type)
         ? type
         : undefined,
+      annotation,
     });
   }
 

@@ -67,3 +67,50 @@ export async function copySvgToClipboard(element: HTMLElement): Promise<void> {
   const svgString = serializer.serializeToString(svgElement);
   await navigator.clipboard.writeText(svgString);
 }
+
+export async function downloadPptx(
+  element: HTMLElement,
+  filename: string = 'cascade-chart.pptx'
+): Promise<void> {
+  // Dynamic import with webpackIgnore to avoid bundling node: protocol modules
+  // pptxgenjs has a node:https import that webpack can't resolve statically
+  const PptxGenJS = (await import(/* webpackIgnore: true */ 'pptxgenjs')).default;
+
+  const dataUrl = await toPng(element, {
+    ...EXPORT_OPTIONS,
+    pixelRatio: 3,
+  });
+
+  const pptx = new PptxGenJS();
+  pptx.defineLayout({ name: 'WIDESCREEN', width: 13.33, height: 7.5 });
+  pptx.layout = 'WIDESCREEN';
+
+  const slide = pptx.addSlide();
+
+  const slideW = 13.33;
+  const slideH = 7.5;
+  const padding = 0.5;
+  const maxW = slideW - 2 * padding;
+  const maxH = slideH - 2 * padding;
+
+  const chartAspect = element.offsetWidth / element.offsetHeight;
+  let imgW = maxW;
+  let imgH = imgW / chartAspect;
+  if (imgH > maxH) {
+    imgH = maxH;
+    imgW = imgH * chartAspect;
+  }
+
+  const imgX = (slideW - imgW) / 2;
+  const imgY = (slideH - imgH) / 2;
+
+  slide.addImage({
+    data: dataUrl,
+    x: imgX,
+    y: imgY,
+    w: imgW,
+    h: imgH,
+  });
+
+  await pptx.writeFile({ fileName: filename });
+}

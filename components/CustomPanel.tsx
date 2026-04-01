@@ -257,6 +257,7 @@ export default function CustomPanel() {
       <Section title="Labels">
         <ToggleRow label="Value labels" checked={config.showValueLabels} onChange={(v) => setConfig({ showValueLabels: v })} />
         <ToggleRow label="Delta labels" checked={config.showDeltaLabels} onChange={(v) => setConfig({ showDeltaLabels: v })} />
+        <ToggleRow label="Annotations" checked={config.showAnnotations} onChange={(v) => setConfig({ showAnnotations: v })} />
         <ToggleRow label="Legend" checked={config.showLegend} onChange={(v) => setConfig({ showLegend: v })} />
         {config.showLegend && (
           <div className="flex items-center gap-2 pl-2">

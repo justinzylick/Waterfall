@@ -166,6 +166,27 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
                   </text>
                 )}
 
+                {/* Annotation label */}
+                {config.showAnnotations && bar.annotation && (
+                  <text
+                    x={bar.x + bar.barWidth / 2}
+                    y={
+                      bar.annotationPosition === 'below'
+                        ? bar.isNegative
+                          ? bar.yBottom + (config.showValueLabels ? 32 : 16)
+                          : bar.yBottom + 16
+                        : bar.yTop - (config.showValueLabels ? 24 : 8)
+                    }
+                    textAnchor="middle"
+                    fontSize={config.fontSize.labels - 2}
+                    fontStyle="italic"
+                    fill={labelColor}
+                    opacity={0.7}
+                  >
+                    {bar.annotation}
+                  </text>
+                )}
+
                 {/* Delta label on change bars */}
                 {config.showDeltaLabels &&
                   bar.type !== 'start' &&

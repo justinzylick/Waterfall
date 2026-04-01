@@ -19,6 +19,8 @@ export interface BarLayout {
   deltaPercent: string;
   totalDeltaPercent: string;
   isNegative: boolean;
+  annotation?: string;
+  annotationPosition: 'above' | 'below';
 }
 
 export interface ConnectorLine {
@@ -81,6 +83,8 @@ export function computeWaterfallLayout(
     type: DataRow['type'];
     runningStart: number;
     runningEnd: number;
+    annotation?: string;
+    annotationPosition: 'above' | 'below';
   }> = [];
 
   for (const row of rows) {
@@ -94,6 +98,8 @@ export function computeWaterfallLayout(
         type: row.type,
         runningStart: barStart,
         runningEnd: barEnd,
+        annotation: row.annotation,
+        annotationPosition: row.annotationPosition || 'above',
       });
       runningTotal = row.value;
     } else if (row.type === 'end' || row.type === 'subtotal') {
@@ -107,6 +113,8 @@ export function computeWaterfallLayout(
         type: row.type,
         runningStart: barStart,
         runningEnd: barEnd,
+        annotation: row.annotation,
+        annotationPosition: row.annotationPosition || 'above',
       });
     } else {
       const barStart = runningTotal;
@@ -118,6 +126,8 @@ export function computeWaterfallLayout(
         type: row.type,
         runningStart: barStart,
         runningEnd: barEnd,
+        annotation: row.annotation,
+        annotationPosition: row.annotationPosition || 'above',
       });
       runningTotal = barEnd;
     }
@@ -197,6 +207,8 @@ export function computeWaterfallLayout(
       totalDeltaPercent: (b.type === 'end' || b.type === 'subtotal') && startValue !== 0
         ? formatDelta(b.value - startValue, startValue)
         : '',
+      annotation: b.annotation,
+      annotationPosition: b.annotationPosition,
     };
   });
 

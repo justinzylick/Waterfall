@@ -6,6 +6,7 @@ import {
   downloadPng,
   downloadSvg,
   copySvgToClipboard,
+  downloadPptx,
 } from '@/lib/exportUtils';
 
 interface ExportBarProps {
@@ -89,6 +90,21 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
               <path d="M6 2v6M3 6l3 3 3-3M2 10h8" />
             </svg>
             SVG
+          </button>
+          <button
+            onClick={() =>
+              handleExport(
+                () => downloadPptx(chartRef.current!),
+                'PPTX downloaded!'
+              )
+            }
+            disabled={isExporting}
+            className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 rounded-lg transition-colors"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M6 2v6M3 6l3 3 3-3M2 10h8" />
+            </svg>
+            PPTX
           </button>
           <button
             onClick={() =>
