@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -40,6 +40,13 @@ function SortableRow({
   canRemove: boolean;
   computedTotal: number;
 }) {
+  const [localValue, setLocalValue] = useState(String(row.value));
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (!isEditing) setLocalValue(String(row.value));
+  }, [row.value, isEditing]);
+
   const {
     attributes,
     listeners,
@@ -114,8 +121,18 @@ function SortableRow({
             type="number"
             name={`value-${row.id}`}
             aria-label={`Value for ${row.label || 'row'}`}
-            value={row.value}
-            onChange={(e) => onUpdate(row.id, { value: parseFloat(e.target.value) || 0 })}
+            value={localValue}
+            onFocus={() => setIsEditing(true)}
+            onChange={(e) => {
+              setLocalValue(e.target.value);
+              const parsed = parseFloat(e.target.value);
+              if (!isNaN(parsed)) onUpdate(row.id, { value: parsed });
+            }}
+            onBlur={(e) => {
+              setIsEditing(false);
+              const parsed = parseFloat(e.target.value);
+              if (isNaN(parsed)) setLocalValue(String(row.value));
+            }}
             className="w-28 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors tabular-nums text-right"
           />
         )}
