@@ -70,14 +70,30 @@ export async function copySvgToClipboard(element: HTMLElement): Promise<void> {
 
 export async function downloadPptx(
   element: HTMLElement,
-  filename: string = 'cascade-chart.pptx'
+  filename: string = 'cascade-chart.pptx',
+  options?: { isDarkMode?: boolean; toggleDarkMode?: () => void }
 ): Promise<void> {
   const PptxGenJS = (await import('pptxgenjs')).default;
 
+  // Force light mode for PPTX since slides have white backgrounds
+  const wasDarkMode = options?.isDarkMode;
+  if (wasDarkMode && options?.toggleDarkMode) {
+    options.toggleDarkMode();
+    // Wait for React to re-render with light mode colors
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  }
+
   const dataUrl = await toPng(element, {
     ...EXPORT_OPTIONS,
+    backgroundColor: '#ffffff',
+    style: { background: '#ffffff' },
     pixelRatio: 3,
   });
+
+  // Restore dark mode if it was active
+  if (wasDarkMode && options?.toggleDarkMode) {
+    options.toggleDarkMode();
+  }
 
   const pptx = new PptxGenJS();
   pptx.defineLayout({ name: 'WIDESCREEN', width: 13.33, height: 7.5 });
