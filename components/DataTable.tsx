@@ -72,7 +72,8 @@ function SortableRow({
           {...attributes}
           {...listeners}
           className="cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-500 dark:text-gray-600 dark:hover:text-gray-400 shrink-0 w-5"
-          tabIndex={-1}
+          tabIndex={0}
+          aria-label={`Reorder ${row.label || 'row'}`}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
             <circle cx="4" cy="3" r="1.2" />
@@ -85,6 +86,7 @@ function SortableRow({
         </button>
         <textarea
           name={`label-${row.id}`}
+          aria-label={`Label for ${row.label || 'row'}`}
           value={row.label}
           onChange={(e) => {
             onUpdate(row.id, { label: e.target.value });
@@ -111,6 +113,7 @@ function SortableRow({
           <input
             type="number"
             name={`value-${row.id}`}
+            aria-label={`Value for ${row.label || 'row'}`}
             value={row.value}
             onChange={(e) => onUpdate(row.id, { value: parseFloat(e.target.value) || 0 })}
             className="w-28 bg-transparent text-sm text-gray-900 dark:text-gray-100 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-2 py-1 transition-colors tabular-nums text-right"
@@ -118,6 +121,7 @@ function SortableRow({
         )}
         <select
           name={`type-${row.id}`}
+          aria-label={`Type for ${row.label || 'row'}`}
           value={row.type}
           onChange={(e) => onUpdate(row.id, { type: e.target.value as BarType })}
           className={`w-20 bg-white dark:bg-gray-900 text-xs ${typeColor} border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-400 dark:focus:border-blue-500 focus:outline-none rounded px-1 py-1 transition-colors cursor-pointer`}
@@ -132,8 +136,9 @@ function SortableRow({
           {canRemove && (
             <button
               onClick={() => onRemove(row.id)}
-              className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-all"
-              tabIndex={-1}
+              className="opacity-0 group-hover:opacity-100 focus:opacity-100 text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-all"
+              tabIndex={0}
+              aria-label={`Delete ${row.label || 'row'}`}
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <line x1="3" y1="3" x2="11" y2="11" />
@@ -148,6 +153,7 @@ function SortableRow({
         <input
           type="text"
           name={`annotation-${row.id}`}
+          aria-label={`Annotation for ${row.label || 'row'}`}
           value={row.annotation || ''}
           onChange={(e) => onUpdate(row.id, { annotation: e.target.value })}
           placeholder="Add annotation..."
@@ -162,6 +168,7 @@ function SortableRow({
               })
             }
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xs px-1 py-0.5 rounded border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-colors shrink-0"
+            aria-label={`Move annotation ${(row.annotationPosition || 'above') === 'above' ? 'below' : 'above'} for ${row.label || 'row'}`}
             title={`Position: ${row.annotationPosition || 'above'}`}
           >
             {(row.annotationPosition || 'above') === 'above' ? '↑' : '↓'}
@@ -239,6 +246,8 @@ export default function DataTable() {
           <button
             onClick={() => sortRows(sortOrder === 'magnitude-desc' ? 'none' : 'magnitude-desc')}
             className={`p-1 rounded transition-colors ${sortOrder === 'magnitude-desc' ? 'text-blue-500 dark:text-blue-400' : 'text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400'}`}
+            aria-label="Sort by magnitude, largest first"
+            aria-pressed={sortOrder === 'magnitude-desc'}
             title="Sort by magnitude (largest first)"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -248,6 +257,8 @@ export default function DataTable() {
           <button
             onClick={() => sortRows(sortOrder === 'magnitude-asc' ? 'none' : 'magnitude-asc')}
             className={`p-1 rounded transition-colors ${sortOrder === 'magnitude-asc' ? 'text-blue-500 dark:text-blue-400' : 'text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400'}`}
+            aria-label="Sort by magnitude, smallest first"
+            aria-pressed={sortOrder === 'magnitude-asc'}
             title="Sort by magnitude (smallest first)"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -307,6 +318,7 @@ export default function DataTable() {
       <textarea
         ref={fileInputRef}
         name="paste-data"
+        aria-label="Paste data from Excel"
         className="hidden w-full h-20 text-xs p-2 border border-gray-200 dark:border-gray-700 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 resize-none"
         placeholder="Paste your data here (tab-separated: Label, Value, Type)..."
         onPaste={handleManualPaste}

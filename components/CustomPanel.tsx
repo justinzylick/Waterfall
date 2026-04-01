@@ -39,11 +39,14 @@ function Section({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(defaultOpen);
+  const id = `section-${title.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
     <div className="border-b border-gray-100 dark:border-gray-800">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls={id}
         className="w-full flex items-center justify-between py-2.5 px-1 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
       >
         {title}
@@ -55,11 +58,12 @@ function Section({
           stroke="currentColor"
           strokeWidth="1.5"
           className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
         >
           <path d="M3 4.5l3 3 3-3" />
         </svg>
       </button>
-      {open && <div className="pb-3 space-y-2.5">{children}</div>}
+      {open && <div id={id} className="pb-3 space-y-2.5">{children}</div>}
     </div>
   );
 }
@@ -88,6 +92,11 @@ function SliderRow({
       <input
         type="range"
         name={fieldName}
+        aria-label={label}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={value}
+        aria-valuetext={`${value}${suffix}`}
         min={min}
         max={max}
         step={step}
@@ -114,11 +123,17 @@ function ToggleRow({
   return (
     <label className="flex items-center justify-between cursor-pointer group">
       <span className="text-xs text-gray-600 dark:text-gray-400">{label}</span>
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="sr-only"
+      />
       <div
         className={`w-8 h-[18px] rounded-full transition-colors relative ${
           checked ? 'bg-blue-500' : 'bg-gray-200 dark:bg-gray-700'
         }`}
-        onClick={() => onChange(!checked)}
+        aria-hidden="true"
       >
         <div
           className={`absolute top-[2px] w-[14px] h-[14px] rounded-full bg-white shadow-sm transition-transform ${
@@ -147,6 +162,7 @@ export default function CustomPanel() {
         <input
           type="text"
           name="chart-title"
+          aria-label="Chart title"
           value={config.title}
           onChange={(e) => setConfig({ title: e.target.value })}
           placeholder="Chart title..."
@@ -155,6 +171,7 @@ export default function CustomPanel() {
         <input
           type="text"
           name="chart-subtitle"
+          aria-label="Chart subtitle"
           value={config.subtitle}
           onChange={(e) => setConfig({ subtitle: e.target.value })}
           placeholder="Subtitle (optional)..."
@@ -194,6 +211,8 @@ export default function CustomPanel() {
                     ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
                     : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                 }`}
+                aria-label={`Color preset: ${name}`}
+                aria-pressed={config.palette === name}
                 title={name}
               >
                 {Object.values(colors).map((c, i) => (
@@ -215,6 +234,7 @@ export default function CustomPanel() {
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Font</span>
           <select
             name="font-family"
+            aria-label="Font family"
             value={config.fontFamily}
             onChange={(e) => setConfig({ fontFamily: e.target.value })}
             className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
@@ -245,6 +265,7 @@ export default function CustomPanel() {
           <input
             type="number"
             name="y-axis-max"
+            aria-label="Y-axis maximum value"
             value={config.yAxisMax ?? ''}
             onChange={(e) => setConfig({ yAxisMax: e.target.value === '' ? null : parseFloat(e.target.value) })}
             placeholder="Auto"
@@ -264,6 +285,7 @@ export default function CustomPanel() {
             <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Position</span>
             <select
               name="legend-position"
+              aria-label="Legend position"
               value={config.legendPosition || 'top-right'}
               onChange={(e) => setConfig({ legendPosition: e.target.value as 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' })}
               className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
@@ -294,6 +316,7 @@ export default function CustomPanel() {
         <input
           type="text"
           name="start-bar-label"
+          aria-label="Start bar label"
           value={config.startBarLabel}
           onChange={(e) => setConfig({ startBarLabel: e.target.value })}
           placeholder="e.g. F26 H1 Trend"
@@ -304,6 +327,7 @@ export default function CustomPanel() {
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Format</span>
           <select
             name="value-format"
+            aria-label="Value format"
             value={config.valueFormat}
             onChange={(e) => setConfig({ valueFormat: e.target.value as 'full' | 'abbreviated' | 'percentage' })}
             className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
@@ -318,6 +342,7 @@ export default function CustomPanel() {
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Negatives</span>
           <select
             name="negative-format"
+            aria-label="Negative number format"
             value={config.negativeFormat}
             onChange={(e) => setConfig({ negativeFormat: e.target.value as 'minus' | 'parentheses' })}
             className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"
@@ -334,6 +359,8 @@ export default function CustomPanel() {
               <button
                 key={c || 'none'}
                 onClick={() => setConfig({ currencySymbol: c })}
+                aria-label={c ? `Currency: ${c}` : 'No currency symbol'}
+                aria-pressed={config.currencySymbol === c}
                 className={`px-2 py-0.5 text-xs rounded border transition-colors ${
                   config.currencySymbol === c
                     ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
@@ -352,6 +379,7 @@ export default function CustomPanel() {
           <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Delta base</span>
           <select
             name="delta-base"
+            aria-label="Delta calculation base"
             value={config.deltaBase}
             onChange={(e) => setConfig({ deltaBase: e.target.value as 'start' | 'previous' })}
             className="flex-1 text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 cursor-pointer"

@@ -69,6 +69,14 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+      {/* Skip navigation link — visible only on keyboard focus */}
+      <a
+        href="#main-content"
+        className="skip-link"
+      >
+        Skip to chart
+      </a>
+
       {/* Mobile portrait notice */}
       <div className="mobile-portrait-notice items-center justify-center fixed inset-0 z-50 bg-white dark:bg-gray-950 px-8">
         <div className="text-center space-y-3">
@@ -119,6 +127,7 @@ export default function Home() {
         <button
           onClick={toggleDarkMode}
           className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           title={isDarkMode ? 'Light mode' : 'Dark mode'}
         >
           {isDarkMode ? (
@@ -137,14 +146,14 @@ export default function Home() {
       {/* Main layout */}
       <div className="flex h-[calc(100vh-52px)]">
         {/* Left sidebar */}
-        <aside className="w-[400px] shrink-0 border-r border-gray-100 dark:border-gray-800 overflow-y-auto p-4 space-y-4">
+        <aside aria-label="Chart configuration" className="w-[400px] shrink-0 border-r border-gray-100 dark:border-gray-800 overflow-y-auto p-4 space-y-4">
           <DataTable />
           <ScenarioPanel />
           <CustomPanel />
         </aside>
 
         {/* Chart preview area */}
-        <main ref={mainRef} className="relative flex-1 min-w-0 overflow-hidden flex items-center justify-center p-8 pb-20">
+        <main ref={mainRef} id="main-content" aria-label="Chart preview" className="relative flex-1 min-w-0 overflow-hidden flex items-center justify-center p-8 pb-20">
           <div
             className="transparency-grid no-export rounded-xl border border-gray-200 dark:border-gray-800 shadow-inner inline-block"
             style={{ transform: `scale(${chartScale})`, transformOrigin: 'center' }}
@@ -154,6 +163,9 @@ export default function Home() {
           <ExportBar chartRef={chartRef} />
         </main>
       </div>
+
+      {/* Live region for screen reader toast announcements */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only" id="toast-announcer" />
     </div>
   );
 }

@@ -41,8 +41,9 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
   };
 
   return (
-    <div ref={ref} style={{ width: config.chartWidth, height: config.chartHeight }}>
+    <div ref={ref} style={{ width: config.chartWidth, height: config.chartHeight }} role="figure" aria-label={config.title || 'Waterfall chart'}>
       <svg
+        aria-hidden="true"
         width={config.chartWidth}
         height={config.chartHeight}
         viewBox={`0 0 ${config.chartWidth} ${config.chartHeight}`}
@@ -329,6 +330,27 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
           );
         })()}
       </svg>
+
+      {/* Visually hidden data table for screen readers */}
+      <table className="sr-only">
+        <caption>{config.title || 'Waterfall chart data'}{config.subtitle ? ` — ${config.subtitle}` : ''}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Value</th>
+            <th scope="col">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bars.map((bar) => (
+            <tr key={bar.id}>
+              <td>{bar.label.replace('\n', ' ')}</td>
+              <td>{bar.formattedValue}</td>
+              <td>{bar.type}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 });

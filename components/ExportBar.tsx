@@ -22,7 +22,12 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
 
   const showToast = useCallback((message: string) => {
     setToast(message);
-    setTimeout(() => setToast(null), 2500);
+    const announcer = document.getElementById('toast-announcer');
+    if (announcer) announcer.textContent = message;
+    setTimeout(() => {
+      setToast(null);
+      if (announcer) announcer.textContent = '';
+    }, 2500);
   }, []);
 
   const handleExport = useCallback(
@@ -53,6 +58,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
             )
           }
           disabled={isExporting}
+          aria-label="Copy chart as PNG to clipboard"
           className="flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 rounded-xl transition-colors shadow-sm"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -72,6 +78,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
               )
             }
             disabled={isExporting}
+            aria-label="Download chart as PNG"
             className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 rounded-lg transition-colors"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -87,6 +94,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
               )
             }
             disabled={isExporting}
+            aria-label="Download chart as SVG"
             className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 rounded-lg transition-colors"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -102,6 +110,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
               )
             }
             disabled={isExporting}
+            aria-label="Download chart as PPTX"
             className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 rounded-lg transition-colors"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -127,7 +136,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 toast-enter">
+        <div role="status" className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 toast-enter">
           <div className="px-4 py-2.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-sm font-medium rounded-xl shadow-lg">
             {toast}
           </div>

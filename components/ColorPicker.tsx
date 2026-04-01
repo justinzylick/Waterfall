@@ -16,6 +16,7 @@ export default function ColorPicker({ label, value, onChange }: ColorPickerProps
     <div className="flex items-center gap-2">
       <button
         onClick={() => inputRef.current?.click()}
+        aria-label={`Pick color for ${label}: current value ${value}`}
         className="w-6 h-6 rounded-md border border-gray-200 dark:border-gray-700 cursor-pointer shrink-0 shadow-sm"
         style={{ backgroundColor: value }}
       />
@@ -23,6 +24,7 @@ export default function ColorPicker({ label, value, onChange }: ColorPickerProps
         ref={inputRef}
         type="color"
         name={fieldName}
+        aria-label={`Color picker for ${label}`}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="sr-only"
@@ -31,6 +33,7 @@ export default function ColorPicker({ label, value, onChange }: ColorPickerProps
       <input
         type="text"
         name={`${fieldName}-hex`}
+        aria-label={`Hex value for ${label}`}
         value={value}
         onChange={(e) => {
           if (/^#[0-9A-Fa-f]{0,6}$/.test(e.target.value)) {

@@ -82,6 +82,8 @@ export default function ScenarioPanel() {
     <div className="border-b border-gray-100 dark:border-gray-800">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls="scenario-list"
         className="w-full flex items-center justify-between py-2.5 px-1 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
       >
         Scenarios
@@ -93,13 +95,14 @@ export default function ScenarioPanel() {
           stroke="currentColor"
           strokeWidth="1.5"
           className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
         >
           <path d="M3 4.5l3 3 3-3" />
         </svg>
       </button>
 
       {open && (
-        <div className="pb-3 space-y-2">
+        <div id="scenario-list" className="pb-3 space-y-2">
           {/* Save UI */}
           {saving ? (
             <div className="flex items-center gap-1.5">
@@ -109,6 +112,7 @@ export default function ScenarioPanel() {
                 onChange={(e) => setName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSave()}
                 name="scenario-name"
+                aria-label="Scenario name"
                 placeholder="Scenario name..."
                 autoFocus
                 className="flex-1 min-w-0 text-xs bg-transparent text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 focus:border-blue-400 focus:outline-none"
@@ -161,13 +165,15 @@ export default function ScenarioPanel() {
               </div>
               <button
                 onClick={() => handleLoad(s)}
+                aria-label={`Load scenario ${s.name}`}
                 className="text-[10px] font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-1.5 py-0.5 rounded border border-transparent hover:border-blue-200 dark:hover:border-blue-800 transition-colors"
               >
                 Load
               </button>
               <button
                 onClick={() => handleDelete(s.id)}
-                className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-all p-0.5"
+                className="opacity-0 group-hover:opacity-100 focus:opacity-100 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-all p-0.5"
+                aria-label={`Delete scenario ${s.name}`}
                 title="Delete scenario"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
