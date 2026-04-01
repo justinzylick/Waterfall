@@ -72,9 +72,7 @@ export async function downloadPptx(
   element: HTMLElement,
   filename: string = 'cascade-chart.pptx'
 ): Promise<void> {
-  // Dynamic import with webpackIgnore to avoid bundling node: protocol modules
-  // pptxgenjs has a node:https import that webpack can't resolve statically
-  const PptxGenJS = (await import(/* webpackIgnore: true */ 'pptxgenjs')).default;
+  const PptxGenJS = (await import('pptxgenjs')).default;
 
   const dataUrl = await toPng(element, {
     ...EXPORT_OPTIONS,
