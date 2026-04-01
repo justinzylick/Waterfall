@@ -99,7 +99,7 @@ const EXAMPLE_DATA: DataRow[] = [
   { id: genId(), label: 'F26 H1 RSV', value: 100000000, type: 'start' },
   { id: genId(), label: 'L24W Trend', value: -2500000, type: 'decrease' },
   { id: genId(), label: 'Risk', value: -1500000, type: 'decrease' },
-  { id: genId(), label: 'Opportunities', value: 2000000, type: 'increase', annotation: 'Distribution gains' },
+  { id: genId(), label: 'Opportunities', value: 2000000, type: 'increase' },
   { id: genId(), label: 'YR 1 Innovation\n(F27 launches)', value: 700000, type: 'increase' },
   { id: genId(), label: 'YR 2 Innovation\n(F26 launches)', value: -250000, type: 'decrease' },
   { id: genId(), label: 'F27 H1 RSV\nProjection', value: 0, type: 'end' },
