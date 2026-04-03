@@ -16,13 +16,12 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
     [rows, config]
   );
 
-  // Chart text always uses high-contrast colors for clean exports.
-  // Only grid lines adapt to dark mode (they're subtle and not exported visibly).
-  const labelColor = config.colors.label;
-  const axisColor = '#6B7280';
+  // Chart text uses CSS custom properties — adaptive on screen, overridden for export.
+  const labelColor = 'var(--chart-label)';
+  const axisColor = 'var(--chart-axis)';
   const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
-  const subtitleColor = '#6B7280';
-  const legendColor = '#6B7280';
+  const subtitleColor = 'var(--chart-subtitle)';
+  const legendColor = 'var(--chart-axis)';
 
   const { bars, connectors, yScale, yTicks, margin } = layout;
 
