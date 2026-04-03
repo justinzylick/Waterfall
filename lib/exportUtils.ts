@@ -46,14 +46,13 @@ function createExportClone(element: HTMLElement): { clone: HTMLElement; cleanup:
     }
   });
 
-  // Position in viewport but invisible — html-to-image needs
-  // the element in-flow to compute styles and render correctly
+  // Place behind page content — must stay fully opaque for
+  // html-to-image to capture it, but visually hidden behind the page
   clone.style.position = 'fixed';
   clone.style.left = '0';
   clone.style.top = '0';
-  clone.style.opacity = '0';
   clone.style.pointerEvents = 'none';
-  clone.style.zIndex = '-1';
+  clone.style.zIndex = '-9999';
   document.body.appendChild(clone);
 
   return {
