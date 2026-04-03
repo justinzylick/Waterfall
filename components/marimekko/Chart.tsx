@@ -15,9 +15,9 @@ const MarimekkoChart = forwardRef<HTMLDivElement>(function MarimekkoChart(_, ref
     [segments, config]
   );
 
-  const labelColor = 'var(--chart-label)';
-  const axisColor = 'var(--chart-axis)';
-  const subtitleColor = 'var(--chart-subtitle)';
+  const labelColor = '#1F2937';
+  const axisColor = '#6B7280';
+  const subtitleColor = '#6B7280';
 
   const { segments: layoutSegs, margin, innerWidth, innerHeight, uniqueCategories, categoryColors } = layout;
 

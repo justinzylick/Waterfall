@@ -16,12 +16,13 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
     [rows, config]
   );
 
-  // Chart text uses CSS custom properties — adaptive on screen, overridden for export.
-  const labelColor = 'var(--chart-label)';
-  const axisColor = 'var(--chart-axis)';
+  // Always use dark, high-contrast colors in the SVG for clean exports.
+  // Dark mode visibility is handled by a CSS filter on the container.
+  const labelColor = '#1F2937';
+  const axisColor = '#6B7280';
   const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
-  const subtitleColor = 'var(--chart-subtitle)';
-  const legendColor = 'var(--chart-axis)';
+  const subtitleColor = '#6B7280';
+  const legendColor = '#6B7280';
 
   const { bars, connectors, yScale, yTicks, margin } = layout;
 

@@ -1,17 +1,11 @@
 import { toBlob, toPng, toSvg } from 'html-to-image';
 
-const EXPORT_STYLE: Record<string, string> = {
-  background: 'transparent',
-  // Force high-contrast text colors for export (override dark mode CSS vars)
-  '--chart-label': '#1F2937',
-  '--chart-axis': '#6B7280',
-  '--chart-subtitle': '#6B7280',
-};
-
 const EXPORT_OPTIONS = {
   backgroundColor: 'rgba(0,0,0,0)',
   pixelRatio: 2,
-  style: EXPORT_STYLE,
+  style: {
+    background: 'transparent',
+  },
   filter: (node: HTMLElement) => {
     return !node.classList?.contains('no-export');
   },
@@ -75,7 +69,7 @@ export async function downloadPptx(
   const dataUrl = await toPng(element, {
     ...EXPORT_OPTIONS,
     backgroundColor: '#ffffff',
-    style: { ...EXPORT_STYLE, background: '#ffffff' },
+    style: { background: '#ffffff' },
     pixelRatio: 3,
   });
 

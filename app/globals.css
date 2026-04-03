@@ -56,18 +56,6 @@
   --color-total: #37474F;
 }
 
-/* Chart text colors — adaptive for screen, overridden for export */
-:root {
-  --chart-label: #1F2937;
-  --chart-axis: #6B7280;
-  --chart-subtitle: #6B7280;
-}
-
-.dark {
-  --chart-label: #F3F4F6;
-  --chart-axis: #E5E7EB;
-  --chart-subtitle: #D1D5DB;
-}
 
 /* Transparency grid for chart preview */
 .transparency-grid {
@@ -82,12 +70,12 @@
 }
 
 .dark .transparency-grid {
-  background-color: #1a1a2e;
+  background-color: #e8e8ec;
   background-image:
-    linear-gradient(45deg, #16162a 25%, transparent 25%),
-    linear-gradient(-45deg, #16162a 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #16162a 75%),
-    linear-gradient(-45deg, transparent 75%, #16162a 75%);
+    linear-gradient(45deg, #dcdce0 25%, transparent 25%),
+    linear-gradient(-45deg, #dcdce0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #dcdce0 75%),
+    linear-gradient(-45deg, transparent 75%, #dcdce0 75%);
 }
 
 /* Custom scrollbar */
