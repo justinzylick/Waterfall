@@ -7,15 +7,12 @@ import {
   downloadSvg,
   downloadPptx,
 } from '@/lib/exportUtils';
-import { useAppState } from '@/hooks/useAppState';
 
 interface ExportBarProps {
   chartRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function ExportBar({ chartRef }: ExportBarProps) {
-  const isDarkMode = useAppState((s) => s.isDarkMode);
-  const toggleDarkMode = useAppState((s) => s.toggleDarkMode);
   const [toast, setToast] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 
@@ -52,7 +49,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
         <button
           onClick={() =>
             handleExport(
-              () => copyPngToClipboard(chartRef.current!, { isDarkMode, toggleDarkMode }),
+              () => copyPngToClipboard(chartRef.current!),
               'Copied — paste into your presentation!'
             )
           }
@@ -70,7 +67,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
         <button
           onClick={() =>
             handleExport(
-              () => downloadPptx(chartRef.current!, undefined, { isDarkMode, toggleDarkMode }),
+              () => downloadPptx(chartRef.current!),
               'PPTX downloaded!'
             )
           }
@@ -89,7 +86,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
           <button
             onClick={() =>
               handleExport(
-                () => downloadPng(chartRef.current!, undefined, { isDarkMode, toggleDarkMode }),
+                () => downloadPng(chartRef.current!),
                 'PNG downloaded!'
               )
             }
@@ -105,7 +102,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
           <button
             onClick={() =>
               handleExport(
-                () => downloadSvg(chartRef.current!, undefined, { isDarkMode, toggleDarkMode }),
+                () => downloadSvg(chartRef.current!),
                 'SVG downloaded!'
               )
             }
