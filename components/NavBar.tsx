@@ -38,14 +38,9 @@ export default function NavBar() {
           style={{ width: 40, height: 40 }}
           unoptimized
         />
-        <div className="flex flex-col">
-          <span className="text-sm font-bold tracking-tight leading-tight">
-            Chart Lab
-          </span>
-          <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium tracking-wide uppercase">
-            Strategic Accounts & Customer Development
-          </span>
-        </div>
+        <span className="text-lg font-bold tracking-tight">
+          Chart Lab
+        </span>
       </div>
 
       {/* Chart type nav */}
