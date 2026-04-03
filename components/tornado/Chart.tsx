@@ -24,6 +24,16 @@ const TornadoChart = forwardRef<HTMLDivElement>(function TornadoChart(_, ref) {
   const { bars, xScale, centerX, margin, maxValue } = layout;
   const ticks = xScale.ticks(5);
 
+  const lightenColor = (hex: string, amount: number = 0.15) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    const lr = Math.min(255, Math.round(r + (255 - r) * amount));
+    const lg = Math.min(255, Math.round(g + (255 - g) * amount));
+    const lb = Math.min(255, Math.round(b + (255 - b) * amount));
+    return `rgb(${lr},${lg},${lb})`;
+  };
+
   return (
     <div ref={ref} style={{ display: 'inline-block' }}>
       <svg
@@ -36,13 +46,13 @@ const TornadoChart = forwardRef<HTMLDivElement>(function TornadoChart(_, ref) {
         {/* Gradient defs */}
         {config.showGradients && (
           <defs>
-            <linearGradient id="tornado-left-grad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor={config.colors.left} stopOpacity={0.7} />
+            <linearGradient id="tornado-left-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={lightenColor(config.colors.left, 0.2)} />
               <stop offset="100%" stopColor={config.colors.left} />
             </linearGradient>
-            <linearGradient id="tornado-right-grad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor={config.colors.right} />
-              <stop offset="100%" stopColor={config.colors.right} stopOpacity={0.7} />
+            <linearGradient id="tornado-right-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={lightenColor(config.colors.right, 0.2)} />
+              <stop offset="100%" stopColor={config.colors.right} />
             </linearGradient>
           </defs>
         )}

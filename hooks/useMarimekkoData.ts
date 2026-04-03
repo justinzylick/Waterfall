@@ -117,7 +117,7 @@ const DEFAULT_CONFIG: MarimekkoConfig = {
   showValues: true,
   showPercentages: true,
   showSegmentWidths: true,
-  showGradients: false,
+  showGradients: true,
   currencySymbol: '$',
   valueFormat: 'percentage',
   decimalPlaces: 0,

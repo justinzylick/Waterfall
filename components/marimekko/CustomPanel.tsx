@@ -88,6 +88,17 @@ export default function MarimekkoCustomPanel() {
       <Section title="Layout">
         <div className="space-y-3 px-1">
           <div className="flex items-center justify-between">
+            <span className="text-xs text-gray-500 dark:text-gray-400">Gradients</span>
+            <button
+              onClick={() => setConfig({ showGradients: !config.showGradients })}
+              className={`relative w-9 h-5 rounded-full transition-colors ${config.showGradients ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'}`}
+              role="switch"
+              aria-checked={config.showGradients}
+            >
+              <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform shadow-sm ${config.showGradients ? 'translate-x-4' : ''}`} />
+            </button>
+          </div>
+          <div className="flex items-center justify-between">
             <span className="text-xs text-gray-500 dark:text-gray-400">Show percentages</span>
             <button
               onClick={() => setConfig({ showPercentages: !config.showPercentages })}

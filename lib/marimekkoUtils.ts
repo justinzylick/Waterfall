@@ -39,7 +39,7 @@ export function computeMarimekkoLayout(
     top: config.title ? 70 : 30,
     right: 20,
     bottom: 50,
-    left: 20,
+    left: 55,
   };
 
   const innerWidth = config.chartWidth - margin.left - margin.right;

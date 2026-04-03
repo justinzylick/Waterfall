@@ -21,6 +21,21 @@ const MarimekkoChart = forwardRef<HTMLDivElement>(function MarimekkoChart(_, ref
 
   const { segments: layoutSegs, margin, innerWidth, innerHeight, uniqueCategories, categoryColors } = layout;
 
+  const lightenColor = (hex: string, amount: number = 0.15) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    const lr = Math.min(255, Math.round(r + (255 - r) * amount));
+    const lg = Math.min(255, Math.round(g + (255 - g) * amount));
+    const lb = Math.min(255, Math.round(b + (255 - b) * amount));
+    return `rgb(${lr},${lg},${lb})`;
+  };
+
+  // Collect unique colors for gradient defs
+  const uniqueColors = Array.from(new Set(
+    layoutSegs.flatMap((seg) => seg.stacks.map((st) => st.color))
+  ));
+
   return (
     <div ref={ref} style={{ display: 'inline-block' }}>
       <svg
@@ -30,6 +45,20 @@ const MarimekkoChart = forwardRef<HTMLDivElement>(function MarimekkoChart(_, ref
         xmlns="http://www.w3.org/2000/svg"
         style={{ fontFamily: config.fontFamily }}
       >
+        {config.showGradients && (
+          <defs>
+            {uniqueColors.map((color) => (
+              <linearGradient
+                key={color}
+                id={`mekko-grad-${color.replace('#', '')}`}
+                x1="0" y1="0" x2="0" y2="1"
+              >
+                <stop offset="0%" stopColor={lightenColor(color, 0.2)} />
+                <stop offset="100%" stopColor={color} />
+              </linearGradient>
+            ))}
+          </defs>
+        )}
         <g transform={`translate(${margin.left},${margin.top})`}>
           {/* Title */}
           {config.title && (
@@ -95,7 +124,7 @@ const MarimekkoChart = forwardRef<HTMLDivElement>(function MarimekkoChart(_, ref
                     y={stack.y}
                     width={Math.max(stack.width, 0)}
                     height={Math.max(stack.height, 0)}
-                    fill={stack.color}
+                    fill={config.showGradients ? `url(#mekko-grad-${stack.color.replace('#', '')})` : stack.color}
                     stroke={isDarkMode ? '#111827' : '#ffffff'}
                     strokeWidth={1}
                   />
