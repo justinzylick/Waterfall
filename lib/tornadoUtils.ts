@@ -82,8 +82,8 @@ export function computeTornadoLayout(
       leftWidth,
       rightX: centerX,
       rightWidth,
-      formattedLeft: formatCurrency(cat.leftValue, config.currencySymbol, config.valueFormat, config.decimalPlaces, config.negativeFormat),
-      formattedRight: formatCurrency(cat.rightValue, config.currencySymbol, config.valueFormat, config.decimalPlaces, config.negativeFormat),
+      formattedLeft: formatCurrency(cat.leftValue, { symbol: config.currencySymbol, format: config.valueFormat, decimalPlaces: config.decimalPlaces, negativeFormat: config.negativeFormat }),
+      formattedRight: formatCurrency(cat.rightValue, { symbol: config.currencySymbol, format: config.valueFormat, decimalPlaces: config.decimalPlaces, negativeFormat: config.negativeFormat }),
     };
   });
 

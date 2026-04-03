@@ -126,7 +126,7 @@ const TornadoChart = forwardRef<HTMLDivElement>(function TornadoChart(_, ref) {
                   fill={axisColor}
                   fontSize={config.fontSize.axis}
                 >
-                  {formatAxisValue(tick, config.currencySymbol, config.valueFormat, config.decimalPlaces)}
+                  {formatAxisValue(tick, config.currencySymbol, config.valueFormat === 'abbreviated')}
                 </text>
                 <text
                   x={centerX + offset}
@@ -135,7 +135,7 @@ const TornadoChart = forwardRef<HTMLDivElement>(function TornadoChart(_, ref) {
                   fill={axisColor}
                   fontSize={config.fontSize.axis}
                 >
-                  {formatAxisValue(tick, config.currencySymbol, config.valueFormat, config.decimalPlaces)}
+                  {formatAxisValue(tick, config.currencySymbol, config.valueFormat === 'abbreviated')}
                 </text>
               </g>
             );

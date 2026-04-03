@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,6 +11,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     const categoryLabel: Record<string, string> = {
       feature: 'Feature Request',
       bug: 'Bug Report',
@@ -19,7 +21,7 @@ export async function POST(req: NextRequest) {
     };
 
     await resend.emails.send({
-      from: 'Diageo Chart Studio <feedback@resend.dev>',
+      from: 'Chart Lab <feedback@resend.dev>',
       to: process.env.FEEDBACK_EMAIL || 'justin.zylick@diageo.com',
       subject: `[Chart Lab] ${categoryLabel[category] || category}: ${message.slice(0, 60)}`,
       html: `

@@ -100,14 +100,8 @@ export default function TornadoCustomPanel() {
 
       <Section title="Colors">
         <div className="space-y-2 px-1">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500 dark:text-gray-400 w-16 shrink-0">Left</span>
-            <ColorPicker color={config.colors.left} onChange={(c) => setColors({ left: c })} />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500 dark:text-gray-400 w-16 shrink-0">Right</span>
-            <ColorPicker color={config.colors.right} onChange={(c) => setColors({ right: c })} />
-          </div>
+          <ColorPicker label="Left" value={config.colors.left} onChange={(c) => setColors({ left: c })} />
+          <ColorPicker label="Right" value={config.colors.right} onChange={(c) => setColors({ right: c })} />
         </div>
       </Section>
 
