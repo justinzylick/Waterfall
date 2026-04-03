@@ -9,6 +9,7 @@ export default function TornadoDataTable() {
   const updateCategory = useTornadoData((s) => s.updateCategory);
   const loadExample = useTornadoData((s) => s.loadExample);
   const config = useTornadoData((s) => s.config);
+  const setConfig = useTornadoData((s) => s.setConfig);
 
   return (
     <section aria-label="Tornado data" className="space-y-2">
@@ -18,11 +19,26 @@ export default function TornadoDataTable() {
         </h2>
       </div>
 
-      {/* Column headers */}
+      {/* Column headers — editable */}
       <div className="grid grid-cols-[1fr_80px_80px_28px] gap-2 text-[10px] font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide px-1">
-        <span>Category</span>
-        <span className="text-right">{config.leftLabel}</span>
-        <span className="text-right">{config.rightLabel}</span>
+        <input
+          type="text"
+          value={config.categoryLabel}
+          onChange={(e) => setConfig({ categoryLabel: e.target.value })}
+          className="text-[10px] font-medium uppercase tracking-wide bg-transparent border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-500 rounded px-1 py-0.5 outline-none text-gray-400 dark:text-gray-500 focus:text-gray-900 dark:focus:text-gray-100 transition-colors"
+        />
+        <input
+          type="text"
+          value={config.leftLabel}
+          onChange={(e) => setConfig({ leftLabel: e.target.value })}
+          className="text-right text-[10px] font-medium uppercase tracking-wide bg-transparent border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-500 rounded px-1 py-0.5 outline-none text-gray-400 dark:text-gray-500 focus:text-gray-900 dark:focus:text-gray-100 transition-colors"
+        />
+        <input
+          type="text"
+          value={config.rightLabel}
+          onChange={(e) => setConfig({ rightLabel: e.target.value })}
+          className="text-right text-[10px] font-medium uppercase tracking-wide bg-transparent border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-blue-500 rounded px-1 py-0.5 outline-none text-gray-400 dark:text-gray-500 focus:text-gray-900 dark:focus:text-gray-100 transition-colors"
+        />
         <span />
       </div>
 

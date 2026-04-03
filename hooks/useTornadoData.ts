@@ -10,6 +10,7 @@ export interface TornadoCategory {
 export interface TornadoConfig {
   title: string;
   subtitle: string;
+  categoryLabel: string;
   leftLabel: string;
   rightLabel: string;
   colors: {
@@ -57,18 +58,21 @@ function genId(): string {
 }
 
 const EXAMPLE_DATA: TornadoCategory[] = [
-  { id: genId(), label: 'Spirits', leftValue: 42, rightValue: 35 },
-  { id: genId(), label: 'Beer', leftValue: 28, rightValue: 38 },
-  { id: genId(), label: 'Wine', leftValue: 18, rightValue: 15 },
-  { id: genId(), label: 'RTD/Cocktails', leftValue: 8, rightValue: 22 },
-  { id: genId(), label: 'Non-Alc', leftValue: 4, rightValue: 12 },
+  { id: genId(), label: 'NAW', leftValue: 185, rightValue: 210 },
+  { id: genId(), label: 'Vodka', leftValue: 120, rightValue: 95 },
+  { id: genId(), label: 'Tequila', leftValue: 75, rightValue: 130 },
+  { id: genId(), label: 'Rum', leftValue: 60, rightValue: 45 },
+  { id: genId(), label: 'Cordials', leftValue: 35, rightValue: 28 },
+  { id: genId(), label: 'RTD', leftValue: 90, rightValue: 110 },
+  { id: genId(), label: 'RTS', leftValue: 55, rightValue: 42 },
 ];
 
 const DEFAULT_CONFIG: TornadoConfig = {
   title: '',
   subtitle: '',
-  leftLabel: 'Diageo',
-  rightLabel: 'Competitor',
+  categoryLabel: 'Segment',
+  leftLabel: 'Competitor',
+  rightLabel: 'Diageo',
   colors: {
     left: '#6366F1',
     right: '#F43F5E',

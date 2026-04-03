@@ -75,29 +75,6 @@ export default function TornadoCustomPanel() {
         </div>
       </Section>
 
-      <Section title="Labels">
-        <div className="space-y-2 px-1">
-          <div className="flex items-center gap-2">
-            <label className="text-xs text-gray-500 dark:text-gray-400 w-16 shrink-0">Left</label>
-            <input
-              type="text"
-              value={config.leftLabel}
-              onChange={(e) => setConfig({ leftLabel: e.target.value })}
-              className="flex-1 px-2 py-1.5 text-sm bg-transparent border border-gray-200 dark:border-gray-700 rounded-md outline-none text-gray-900 dark:text-gray-100 focus:border-blue-500"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <label className="text-xs text-gray-500 dark:text-gray-400 w-16 shrink-0">Right</label>
-            <input
-              type="text"
-              value={config.rightLabel}
-              onChange={(e) => setConfig({ rightLabel: e.target.value })}
-              className="flex-1 px-2 py-1.5 text-sm bg-transparent border border-gray-200 dark:border-gray-700 rounded-md outline-none text-gray-900 dark:text-gray-100 focus:border-blue-500"
-            />
-          </div>
-        </div>
-      </Section>
-
       <Section title="Colors">
         <div className="space-y-2 px-1">
           <ColorPicker label="Left" value={config.colors.left} onChange={(c) => setColors({ left: c })} />
