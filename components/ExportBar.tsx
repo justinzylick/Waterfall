@@ -5,7 +5,6 @@ import {
   copyPngToClipboard,
   downloadPng,
   downloadSvg,
-  copySvgToClipboard,
   downloadPptx,
 } from '@/lib/exportUtils';
 import { useAppState } from '@/hooks/useAppState';
@@ -49,12 +48,12 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
   return (
     <>
       <div className="no-export absolute bottom-4 left-4 right-4 z-10 flex items-center justify-center gap-3 px-6 py-3 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50 rounded-xl shadow-sm">
-        {/* Primary CTA */}
+        {/* Primary actions */}
         <button
           onClick={() =>
             handleExport(
               () => copyPngToClipboard(chartRef.current!),
-              'Copied to clipboard — paste into your presentation!'
+              'Copied — paste into your presentation!'
             )
           }
           disabled={isExporting}
@@ -65,7 +64,24 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
             <rect x="5" y="2" width="8" height="10" rx="1.5" />
             <path d="M3 5v8a1.5 1.5 0 001.5 1.5H11" />
           </svg>
-          {isExporting ? 'Exporting...' : 'Copy to Clipboard'}
+          {isExporting ? 'Exporting...' : 'Copy'}
+        </button>
+
+        <button
+          onClick={() =>
+            handleExport(
+              () => downloadPptx(chartRef.current!, undefined, { isDarkMode, toggleDarkMode }),
+              'PPTX downloaded!'
+            )
+          }
+          disabled={isExporting}
+          aria-label="Download chart as PPTX"
+          className="flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 rounded-xl transition-colors shadow-sm"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M8 3v7M5 7l3 3 3-3M3 12h10" />
+          </svg>
+          PPTX
         </button>
 
         {/* Secondary actions */}
@@ -101,35 +117,6 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
               <path d="M6 2v6M3 6l3 3 3-3M2 10h8" />
             </svg>
             SVG
-          </button>
-          <button
-            onClick={() =>
-              handleExport(
-                () => downloadPptx(chartRef.current!, undefined, { isDarkMode, toggleDarkMode }),
-                'PPTX downloaded!'
-              )
-            }
-            disabled={isExporting}
-            aria-label="Download chart as PPTX"
-            className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 rounded-lg transition-colors"
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M6 2v6M3 6l3 3 3-3M2 10h8" />
-            </svg>
-            PPTX
-          </button>
-          <button
-            onClick={() =>
-              handleExport(
-                () => copySvgToClipboard(chartRef.current!),
-                'SVG markup copied!'
-              )
-            }
-            disabled={isExporting}
-            className="px-2 py-1.5 text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50 transition-colors"
-            title="Copy SVG Markup"
-          >
-            Copy SVG Markup
           </button>
         </div>
       </div>
