@@ -95,7 +95,7 @@ const MarimekkoChart = forwardRef<HTMLDivElement>(function MarimekkoChart(_, ref
                   y1={y}
                   x2={innerWidth}
                   y2={y}
-                  stroke={isDarkMode ? '#374151' : '#e5e7eb'}
+                  stroke={isDarkMode ? '#4B5563' : '#e5e7eb'}
                   strokeWidth={pct === 0 || pct === 100 ? 1 : 0.5}
                   strokeDasharray={pct === 0 || pct === 100 ? 'none' : '3,3'}
                 />
