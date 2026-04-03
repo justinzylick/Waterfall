@@ -62,8 +62,8 @@ const EXAMPLE_DATA: TornadoCategory[] = [
   { id: genId(), label: 'Vodka', leftValue: 120, rightValue: 95 },
   { id: genId(), label: 'Tequila', leftValue: 75, rightValue: 130 },
   { id: genId(), label: 'Rum', leftValue: 60, rightValue: 45 },
-  { id: genId(), label: 'Cordials', leftValue: 35, rightValue: 28 },
-  { id: genId(), label: 'RTD', leftValue: 90, rightValue: 110 },
+  { id: genId(), label: 'Cordials', leftValue: 35, rightValue: 44 },
+  { id: genId(), label: 'RTD', leftValue: 90, rightValue: 10 },
   { id: genId(), label: 'RTS', leftValue: 55, rightValue: 42 },
 ];
 
