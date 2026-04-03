@@ -1,55 +1,46 @@
 'use client';
 
-import { useRef, useEffect, useState, useCallback } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useAppState } from '@/hooks/useAppState';
 import { useChartData } from '@/hooks/useChartData';
-import Chart from '@/components/Chart';
-import DataTable from '@/components/DataTable';
-import CustomPanel from '@/components/CustomPanel';
-import ExportBar from '@/components/ExportBar';
-import ScenarioPanel from '@/components/ScenarioPanel';
+import { useTornadoData } from '@/hooks/useTornadoData';
+import { useMarimekkoData } from '@/hooks/useMarimekkoData';
+import NavBar from '@/components/NavBar';
+import ChartWorkspace from '@/components/ChartWorkspace';
+import FeedbackDrawer from '@/components/FeedbackDrawer';
+import Chart from '@/components/waterfall/Chart';
+import DataTable from '@/components/waterfall/DataTable';
+import CustomPanel from '@/components/waterfall/CustomPanel';
+import ScenarioPanel from '@/components/waterfall/ScenarioPanel';
+import TornadoChart from '@/components/tornado/Chart';
+import TornadoDataTable from '@/components/tornado/DataTable';
+import TornadoCustomPanel from '@/components/tornado/CustomPanel';
+import MarimekkoChart from '@/components/marimekko/Chart';
+import MarimekkoDataTable from '@/components/marimekko/DataTable';
+import MarimekkoCustomPanel from '@/components/marimekko/CustomPanel';
 
 export default function Home() {
-  const chartRef = useRef<HTMLDivElement>(null);
-  const mainRef = useRef<HTMLElement>(null);
-  const isDarkMode = useChartData((s) => s.isDarkMode);
-  const toggleDarkMode = useChartData((s) => s.toggleDarkMode);
+  const isDarkMode = useAppState((s) => s.isDarkMode);
+  const toggleDarkMode = useAppState((s) => s.toggleDarkMode);
+  const activeChart = useAppState((s) => s.activeChart);
   const chartWidth = useChartData((s) => s.config.chartWidth);
   const chartHeight = useChartData((s) => s.config.chartHeight);
+  const tornadoWidth = useTornadoData((s) => s.config.chartWidth);
+  const tornadoHeight = useTornadoData((s) => s.config.chartHeight);
+  const marimekkoWidth = useMarimekkoData((s) => s.config.chartWidth);
+  const marimekkoHeight = useMarimekkoData((s) => s.config.chartHeight);
   const [mounted, setMounted] = useState(false);
-  const [chartScale, setChartScale] = useState(1);
 
   useEffect(() => {
     // Hydrate dark mode from localStorage on mount
-    // Default is dark; only switch to light if user explicitly saved that preference
     try {
       const saved = localStorage.getItem('waterfall-dark-mode');
-      if (saved === 'false' && useChartData.getState().isDarkMode) {
+      if (saved === 'false' && useAppState.getState().isDarkMode) {
         toggleDarkMode();
       }
     } catch {}
     setMounted(true);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const updateScale = useCallback(() => {
-    const main = mainRef.current;
-    if (!main) return;
-    const padding = 64; // p-8 = 32px each side
-    const barHeight = 72; // floating export bar + bottom gap
-    const availW = main.clientWidth - padding;
-    const availH = main.clientHeight - padding - barHeight;
-    const scale = Math.min(availW / chartWidth, availH / chartHeight, 2);
-    setChartScale(Math.max(scale, 0.5));
-  }, [chartWidth, chartHeight]);
-
-  useEffect(() => {
-    const main = mainRef.current;
-    if (!main) return;
-    updateScale();
-    const ro = new ResizeObserver(updateScale);
-    ro.observe(main);
-    return () => ro.disconnect();
-  }, [updateScale, mounted]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -69,11 +60,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
-      {/* Skip navigation link — visible only on keyboard focus */}
-      <a
-        href="#main-content"
-        className="skip-link"
-      >
+      {/* Skip navigation link */}
+      <a href="#main-content" className="skip-link">
         Skip to chart
       </a>
 
@@ -93,76 +81,52 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-3 border-b border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-3">
-          <Image
-            src="/diageo-logo-black.svg"
-            alt="Diageo"
-            width={40}
-            height={40}
-            className={`shrink-0 ${isDarkMode ? 'hidden' : 'block'}`}
-            style={{ width: 40, height: 40 }}
-            unoptimized
-          />
-          <Image
-            src="/diageo-logo-gold.svg"
-            alt="Diageo"
-            width={40}
-            height={40}
-            className={`shrink-0 ${isDarkMode ? 'block' : 'hidden'}`}
-            style={{ width: 40, height: 40 }}
-            unoptimized
-          />
-          <div className="flex flex-col">
-            <span className="text-sm font-bold tracking-tight leading-tight">
-              Diageo SA Waterfall Builder
-            </span>
-            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium tracking-wide uppercase">
-              Strategic Accounts & Customer Development
-            </span>
-          </div>
-        </div>
+      <NavBar />
 
-        <button
-          onClick={toggleDarkMode}
-          className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-          title={isDarkMode ? 'Light mode' : 'Dark mode'}
-        >
-          {isDarkMode ? (
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <circle cx="9" cy="9" r="4" />
-              <path d="M9 1v2M9 15v2M1 9h2M15 9h2M3.3 3.3l1.4 1.4M13.3 13.3l1.4 1.4M3.3 14.7l1.4-1.4M13.3 4.7l1.4-1.4" />
-            </svg>
-          ) : (
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M15.1 10.4A6.5 6.5 0 017.6 2.9 7 7 0 1015.1 10.4z" />
-            </svg>
-          )}
-        </button>
-      </header>
+      {activeChart === 'waterfall' && (
+        <ChartWorkspace
+          sidebar={
+            <>
+              <DataTable />
+              <ScenarioPanel />
+              <CustomPanel />
+            </>
+          }
+          chart={Chart}
+          chartWidth={chartWidth}
+          chartHeight={chartHeight}
+        />
+      )}
 
-      {/* Main layout */}
-      <div className="flex h-[calc(100vh-52px)]">
-        {/* Left sidebar */}
-        <aside aria-label="Chart configuration" className="w-[400px] shrink-0 border-r border-gray-100 dark:border-gray-800 overflow-y-auto p-4 space-y-4">
-          <DataTable />
-          <ScenarioPanel />
-          <CustomPanel />
-        </aside>
+      {activeChart === 'marimekko' && (
+        <ChartWorkspace
+          sidebar={
+            <>
+              <MarimekkoDataTable />
+              <MarimekkoCustomPanel />
+            </>
+          }
+          chart={MarimekkoChart}
+          chartWidth={marimekkoWidth}
+          chartHeight={marimekkoHeight}
+        />
+      )}
 
-        {/* Chart preview area */}
-        <main ref={mainRef} id="main-content" aria-label="Chart preview" className="relative flex-1 min-w-0 overflow-hidden flex items-center justify-center p-8 pb-20">
-          <div
-            className="transparency-grid no-export rounded-xl border border-gray-200 dark:border-gray-800 shadow-inner inline-block"
-            style={{ transform: `scale(${chartScale})`, transformOrigin: 'center' }}
-          >
-            <Chart ref={chartRef} />
-          </div>
-          <ExportBar chartRef={chartRef} />
-        </main>
-      </div>
+      {activeChart === 'tornado' && (
+        <ChartWorkspace
+          sidebar={
+            <>
+              <TornadoDataTable />
+              <TornadoCustomPanel />
+            </>
+          }
+          chart={TornadoChart}
+          chartWidth={tornadoWidth}
+          chartHeight={tornadoHeight}
+        />
+      )}
+
+      <FeedbackDrawer />
 
       {/* Live region for screen reader toast announcements */}
       <div aria-live="polite" aria-atomic="true" className="sr-only" id="toast-announcer" />

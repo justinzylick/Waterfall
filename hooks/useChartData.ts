@@ -66,7 +66,6 @@ export interface ChartConfig {
 export interface ChartStore {
   rows: DataRow[];
   config: ChartConfig;
-  isDarkMode: boolean;
   sortOrder: SortOrder;
   originalRows: DataRow[] | null;
 
@@ -81,7 +80,6 @@ export interface ChartStore {
   setColors: (updates: Partial<ChartConfig['colors']>) => void;
   setFontSize: (updates: Partial<ChartConfig['fontSize']>) => void;
   loadScenario: (rows: DataRow[], config: ChartConfig) => void;
-  toggleDarkMode: () => void;
 }
 
 let idCounter = 0;
@@ -152,7 +150,6 @@ const DEFAULT_CONFIG: ChartConfig = {
 export const useChartData = create<ChartStore>((set) => ({
   rows: EXAMPLE_DATA,
   config: DEFAULT_CONFIG,
-  isDarkMode: true,
   sortOrder: 'none' as SortOrder,
   originalRows: null,
 
@@ -271,11 +268,4 @@ export const useChartData = create<ChartStore>((set) => ({
 
   loadScenario: (rows, config) =>
     set({ rows, config, sortOrder: 'none' as SortOrder, originalRows: null }),
-
-  toggleDarkMode: () =>
-    set((state) => {
-      const next = !state.isDarkMode;
-      try { localStorage.setItem('waterfall-dark-mode', String(next)); } catch {}
-      return { isDarkMode: next };
-    }),
 }));

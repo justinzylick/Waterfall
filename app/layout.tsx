@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Diageo SA Waterfall Builder",
-  description: "Create presentation-ready waterfall charts with transparent backgrounds. Paste from Excel, customize, and copy to clipboard.",
+  title: "Chart Lab",
+  description: "Create presentation-ready charts that Excel and PowerPoint can't. Waterfall, Marimekko, and Tornado charts for strategic customer presentations.",
   icons: {
     icon: "/diageo-logo-black.svg",
   },

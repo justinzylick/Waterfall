@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useChartData } from '@/hooks/useChartData';
-import ColorPicker from './ColorPicker';
+import ColorPicker from '@/components/ColorPicker';
 
 const PALETTES: Record<string, { increase: string; decrease: string; total: string }> = {
   corporate: { increase: '#2E7D32', decrease: '#C62828', total: '#37474F' },

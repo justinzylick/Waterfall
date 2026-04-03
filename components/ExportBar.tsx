@@ -8,15 +8,15 @@ import {
   copySvgToClipboard,
   downloadPptx,
 } from '@/lib/exportUtils';
-import { useChartData } from '@/hooks/useChartData';
+import { useAppState } from '@/hooks/useAppState';
 
 interface ExportBarProps {
   chartRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function ExportBar({ chartRef }: ExportBarProps) {
-  const isDarkMode = useChartData((s) => s.isDarkMode);
-  const toggleDarkMode = useChartData((s) => s.toggleDarkMode);
+  const isDarkMode = useAppState((s) => s.isDarkMode);
+  const toggleDarkMode = useAppState((s) => s.toggleDarkMode);
   const [toast, setToast] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 

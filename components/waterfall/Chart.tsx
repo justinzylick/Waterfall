@@ -2,13 +2,14 @@
 
 import { useMemo, forwardRef } from 'react';
 import { useChartData } from '@/hooks/useChartData';
+import { useAppState } from '@/hooks/useAppState';
 import { computeWaterfallLayout } from '@/lib/chartUtils';
 import { formatAxisValue } from '@/lib/formatUtils';
 
 const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
   const rows = useChartData((s) => s.rows);
   const config = useChartData((s) => s.config);
-  const isDarkMode = useChartData((s) => s.isDarkMode);
+  const isDarkMode = useAppState((s) => s.isDarkMode);
 
   const layout = useMemo(
     () => computeWaterfallLayout(rows, config),
