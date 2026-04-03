@@ -7,14 +7,19 @@ import {
   downloadSvg,
   downloadPptx,
 } from '@/lib/exportUtils';
+import { useAppState } from '@/hooks/useAppState';
 
 interface ExportBarProps {
   chartRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function ExportBar({ chartRef }: ExportBarProps) {
+  const isDarkMode = useAppState((s) => s.isDarkMode);
+  const toggleDarkMode = useAppState((s) => s.toggleDarkMode);
   const [toast, setToast] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
+
+  const darkOpts = { isDarkMode, toggleDarkMode };
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -49,7 +54,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
         <button
           onClick={() =>
             handleExport(
-              () => copyPngToClipboard(chartRef.current!),
+              () => copyPngToClipboard(chartRef.current!, darkOpts),
               'Copied — paste into your presentation!'
             )
           }
@@ -67,7 +72,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
         <button
           onClick={() =>
             handleExport(
-              () => downloadPptx(chartRef.current!),
+              () => downloadPptx(chartRef.current!, undefined, darkOpts),
               'PPTX downloaded!'
             )
           }
@@ -86,7 +91,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
           <button
             onClick={() =>
               handleExport(
-                () => downloadPng(chartRef.current!),
+                () => downloadPng(chartRef.current!, undefined, darkOpts),
                 'PNG downloaded!'
               )
             }
@@ -102,7 +107,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
           <button
             onClick={() =>
               handleExport(
-                () => downloadSvg(chartRef.current!),
+                () => downloadSvg(chartRef.current!, undefined, darkOpts),
                 'SVG downloaded!'
               )
             }

@@ -16,13 +16,13 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
     [rows, config]
   );
 
-  // Always use dark, high-contrast colors in the SVG for clean exports.
-  // Dark mode visibility is handled by a CSS filter on the container.
-  const labelColor = '#1F2937';
-  const axisColor = '#6B7280';
+  // Adaptive colors — bright in dark mode for on-screen readability.
+  // Exports temporarily toggle to light mode for high-contrast output.
+  const labelColor = isDarkMode ? '#F3F4F6' : '#1F2937';
+  const axisColor = isDarkMode ? '#E5E7EB' : '#6B7280';
   const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
-  const subtitleColor = '#6B7280';
-  const legendColor = '#6B7280';
+  const subtitleColor = isDarkMode ? '#D1D5DB' : '#6B7280';
+  const legendColor = isDarkMode ? '#D1D5DB' : '#6B7280';
 
   const { bars, connectors, yScale, yTicks, margin } = layout;
 

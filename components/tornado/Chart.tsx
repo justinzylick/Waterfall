@@ -16,10 +16,10 @@ const TornadoChart = forwardRef<HTMLDivElement>(function TornadoChart(_, ref) {
     [categories, config]
   );
 
-  const labelColor = '#1F2937';
-  const axisColor = '#6B7280';
+  const labelColor = isDarkMode ? '#F3F4F6' : '#1F2937';
+  const axisColor = isDarkMode ? '#E5E7EB' : '#6B7280';
   const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
-  const subtitleColor = '#6B7280';
+  const subtitleColor = isDarkMode ? '#D1D5DB' : '#6B7280';
 
   const { bars, xScale, centerX, margin, maxValue } = layout;
   const ticks = xScale.ticks(5);
