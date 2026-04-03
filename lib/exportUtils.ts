@@ -2,7 +2,6 @@ import { toBlob, toPng, toSvg } from 'html-to-image';
 
 export interface ExportDarkModeOptions {
   isDarkMode?: boolean;
-  toggleDarkMode?: () => void;
 }
 
 const EXPORT_OPTIONS = {
@@ -16,40 +15,51 @@ const EXPORT_OPTIONS = {
   },
 };
 
+// Light-mode color mapping for export
+const DARK_TO_LIGHT: Record<string, string> = {
+  '#F3F4F6': '#1F2937',  // chart-label: gray-100 → gray-800
+  '#E5E7EB': '#6B7280',  // chart-axis: gray-200 → gray-500
+  '#D1D5DB': '#6B7280',  // chart-subtitle: gray-300 → gray-500
+  '#4B5563': '#9CA3AF',  // gridColor dark → gridColor light
+};
+
 /**
- * Temporarily switch to light mode for export, hiding the flash
- * with an opaque overlay so the user sees nothing.
+ * Temporarily swap SVG text/line fill and stroke colors from dark-mode
+ * values to light-mode values directly on the DOM, run the export,
+ * then restore. No theme toggle, no overlay, no flash.
  */
-async function withLightMode<T>(
-  options: ExportDarkModeOptions | undefined,
+async function withExportColors<T>(
   element: HTMLElement,
+  options: ExportDarkModeOptions | undefined,
   fn: () => Promise<T>
 ): Promise<T> {
-  const wasDarkMode = options?.isDarkMode;
-  let overlay: HTMLDivElement | null = null;
+  if (!options?.isDarkMode) return fn();
 
-  if (wasDarkMode && options?.toggleDarkMode) {
-    // Create an opaque overlay matching the current dark background
-    // to hide the brief light-mode flash
-    overlay = document.createElement('div');
-    overlay.style.cssText = `
-      position: fixed; inset: 0; z-index: 9999;
-      background: #030712; pointer-events: none;
-    `;
-    document.body.appendChild(overlay);
+  // Collect all SVG elements with fills/strokes to swap
+  const restoreFns: (() => void)[] = [];
 
-    options.toggleDarkMode();
-    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-  }
+  const texts = element.querySelectorAll('svg text');
+  texts.forEach((el) => {
+    const fill = el.getAttribute('fill');
+    if (fill && DARK_TO_LIGHT[fill]) {
+      el.setAttribute('fill', DARK_TO_LIGHT[fill]);
+      restoreFns.push(() => el.setAttribute('fill', fill));
+    }
+  });
+
+  const lines = element.querySelectorAll('svg line');
+  lines.forEach((el) => {
+    const stroke = el.getAttribute('stroke');
+    if (stroke && DARK_TO_LIGHT[stroke]) {
+      el.setAttribute('stroke', DARK_TO_LIGHT[stroke]);
+      restoreFns.push(() => el.setAttribute('stroke', stroke));
+    }
+  });
 
   const result = await fn();
 
-  if (wasDarkMode && options?.toggleDarkMode) {
-    options.toggleDarkMode();
-    // Remove overlay after dark mode is restored
-    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    overlay?.remove();
-  }
+  // Restore original colors
+  restoreFns.forEach((restore) => restore());
 
   return result;
 }
@@ -58,7 +68,7 @@ export async function copyPngToClipboard(
   element: HTMLElement,
   options?: ExportDarkModeOptions
 ): Promise<void> {
-  await withLightMode(options, element, async () => {
+  await withExportColors(element, options, async () => {
     try {
       const blob = await toBlob(element, EXPORT_OPTIONS);
       if (!blob) throw new Error('Failed to generate image');
@@ -87,7 +97,7 @@ export async function downloadPng(
   filename: string = 'cascade-chart.png',
   options?: ExportDarkModeOptions
 ): Promise<void> {
-  await withLightMode(options, element, async () => {
+  await withExportColors(element, options, async () => {
     const dataUrl = await toPng(element, EXPORT_OPTIONS);
     const link = document.createElement('a');
     link.download = filename;
@@ -101,7 +111,7 @@ export async function downloadSvg(
   filename: string = 'cascade-chart.svg',
   options?: ExportDarkModeOptions
 ): Promise<void> {
-  await withLightMode(options, element, async () => {
+  await withExportColors(element, options, async () => {
     const dataUrl = await toSvg(element, {
       ...EXPORT_OPTIONS,
       pixelRatio: 1,
@@ -120,7 +130,7 @@ export async function downloadPptx(
 ): Promise<void> {
   const PptxGenJS = (await import('pptxgenjs')).default;
 
-  await withLightMode(options, element, async () => {
+  await withExportColors(element, options, async () => {
     const dataUrl = await toPng(element, {
       ...EXPORT_OPTIONS,
       backgroundColor: '#ffffff',

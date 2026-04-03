@@ -15,11 +15,10 @@ interface ExportBarProps {
 
 export default function ExportBar({ chartRef }: ExportBarProps) {
   const isDarkMode = useAppState((s) => s.isDarkMode);
-  const toggleDarkMode = useAppState((s) => s.toggleDarkMode);
   const [toast, setToast] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 
-  const darkOpts = { isDarkMode, toggleDarkMode };
+  const darkOpts = { isDarkMode };
 
   const showToast = useCallback((message: string) => {
     setToast(message);
