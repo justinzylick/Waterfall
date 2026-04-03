@@ -20,7 +20,7 @@ const Chart = forwardRef<HTMLDivElement>(function Chart(_, ref) {
   // Exports temporarily toggle to light mode for high-contrast output.
   const labelColor = isDarkMode ? '#F3F4F6' : '#1F2937';
   const axisColor = isDarkMode ? '#E5E7EB' : '#6B7280';
-  const gridColor = isDarkMode ? '#4B5563' : '#D1D5DB';
+  const gridColor = isDarkMode ? '#4B5563' : '#9CA3AF';
   const subtitleColor = isDarkMode ? '#D1D5DB' : '#6B7280';
   const legendColor = isDarkMode ? '#D1D5DB' : '#6B7280';
 
