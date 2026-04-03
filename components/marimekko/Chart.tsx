@@ -16,8 +16,8 @@ const MarimekkoChart = forwardRef<HTMLDivElement>(function MarimekkoChart(_, ref
   );
 
   const labelColor = isDarkMode ? '#E5E7EB' : config.labelColor;
-  const axisColor = isDarkMode ? '#D1D5DB' : '#9CA3AF';
-  const subtitleColor = isDarkMode ? '#9CA3AF' : '#9CA3AF';
+  const axisColor = isDarkMode ? '#D1D5DB' : '#6B7280';
+  const subtitleColor = isDarkMode ? '#9CA3AF' : '#6B7280';
 
   const { segments: layoutSegs, margin, innerWidth, innerHeight, uniqueCategories, categoryColors } = layout;
 

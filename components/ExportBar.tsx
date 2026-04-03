@@ -52,7 +52,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
         <button
           onClick={() =>
             handleExport(
-              () => copyPngToClipboard(chartRef.current!),
+              () => copyPngToClipboard(chartRef.current!, { isDarkMode, toggleDarkMode }),
               'Copied — paste into your presentation!'
             )
           }
@@ -89,7 +89,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
           <button
             onClick={() =>
               handleExport(
-                () => downloadPng(chartRef.current!),
+                () => downloadPng(chartRef.current!, undefined, { isDarkMode, toggleDarkMode }),
                 'PNG downloaded!'
               )
             }
@@ -105,7 +105,7 @@ export default function ExportBar({ chartRef }: ExportBarProps) {
           <button
             onClick={() =>
               handleExport(
-                () => downloadSvg(chartRef.current!),
+                () => downloadSvg(chartRef.current!, undefined, { isDarkMode, toggleDarkMode }),
                 'SVG downloaded!'
               )
             }
