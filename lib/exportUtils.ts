@@ -15,81 +15,83 @@ const EXPORT_OPTIONS = {
   },
 };
 
-// Light-mode color mapping for export
+// Dark → light color mapping for export
 const DARK_TO_LIGHT: Record<string, string> = {
-  '#F3F4F6': '#1F2937',  // chart-label: gray-100 → gray-800
-  '#E5E7EB': '#6B7280',  // chart-axis: gray-200 → gray-500
-  '#D1D5DB': '#6B7280',  // chart-subtitle: gray-300 → gray-500
-  '#4B5563': '#9CA3AF',  // gridColor dark → gridColor light
+  '#F3F4F6': '#1F2937',
+  '#E5E7EB': '#6B7280',
+  '#D1D5DB': '#6B7280',
+  '#4B5563': '#9CA3AF',
 };
 
 /**
- * Temporarily swap SVG text/line fill and stroke colors from dark-mode
- * values to light-mode values directly on the DOM, run the export,
- * then restore. No theme toggle, no overlay, no flash.
+ * Clone the element, swap dark-mode colors to light-mode on the clone,
+ * render offscreen, capture, then remove. Original DOM is never touched.
  */
-async function withExportColors<T>(
-  element: HTMLElement,
-  options: ExportDarkModeOptions | undefined,
-  fn: () => Promise<T>
-): Promise<T> {
-  if (!options?.isDarkMode) return fn();
+function createExportClone(element: HTMLElement): { clone: HTMLElement; cleanup: () => void } {
+  const clone = element.cloneNode(true) as HTMLElement;
 
-  // Collect all SVG elements with fills/strokes to swap
-  const restoreFns: (() => void)[] = [];
-
-  const texts = element.querySelectorAll('svg text');
-  texts.forEach((el) => {
+  // Swap SVG text fills
+  clone.querySelectorAll('svg text').forEach((el) => {
     const fill = el.getAttribute('fill');
     if (fill && DARK_TO_LIGHT[fill]) {
       el.setAttribute('fill', DARK_TO_LIGHT[fill]);
-      restoreFns.push(() => el.setAttribute('fill', fill));
     }
   });
 
-  const lines = element.querySelectorAll('svg line');
-  lines.forEach((el) => {
+  // Swap SVG line strokes
+  clone.querySelectorAll('svg line').forEach((el) => {
     const stroke = el.getAttribute('stroke');
     if (stroke && DARK_TO_LIGHT[stroke]) {
       el.setAttribute('stroke', DARK_TO_LIGHT[stroke]);
-      restoreFns.push(() => el.setAttribute('stroke', stroke));
     }
   });
 
-  const result = await fn();
+  // Position offscreen so it's invisible but renderable
+  clone.style.position = 'fixed';
+  clone.style.left = '-9999px';
+  clone.style.top = '-9999px';
+  clone.style.zIndex = '-1';
+  document.body.appendChild(clone);
 
-  // Restore original colors
-  restoreFns.forEach((restore) => restore());
+  return {
+    clone,
+    cleanup: () => clone.remove(),
+  };
+}
 
-  return result;
+async function getExportElement(
+  element: HTMLElement,
+  options?: ExportDarkModeOptions
+): Promise<{ target: HTMLElement; cleanup: () => void }> {
+  if (options?.isDarkMode) {
+    const { clone, cleanup } = createExportClone(element);
+    return { target: clone, cleanup };
+  }
+  return { target: element, cleanup: () => {} };
 }
 
 export async function copyPngToClipboard(
   element: HTMLElement,
   options?: ExportDarkModeOptions
 ): Promise<void> {
-  await withExportColors(element, options, async () => {
-    try {
-      const blob = await toBlob(element, EXPORT_OPTIONS);
-      if (!blob) throw new Error('Failed to generate image');
-
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          'image/png': blob,
-        }),
-      ]);
-    } catch (err) {
-      const blobPromise = toBlob(element, EXPORT_OPTIONS).then((b) => {
-        if (!b) throw new Error('Failed to generate image');
-        return b;
-      });
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          'image/png': blobPromise,
-        }),
-      ]);
-    }
-  });
+  const { target, cleanup } = await getExportElement(element, options);
+  try {
+    const blob = await toBlob(target, EXPORT_OPTIONS);
+    if (!blob) throw new Error('Failed to generate image');
+    await navigator.clipboard.write([
+      new ClipboardItem({ 'image/png': blob }),
+    ]);
+  } catch (err) {
+    const blobPromise = toBlob(target, EXPORT_OPTIONS).then((b) => {
+      if (!b) throw new Error('Failed to generate image');
+      return b;
+    });
+    await navigator.clipboard.write([
+      new ClipboardItem({ 'image/png': blobPromise }),
+    ]);
+  } finally {
+    cleanup();
+  }
 }
 
 export async function downloadPng(
@@ -97,13 +99,16 @@ export async function downloadPng(
   filename: string = 'cascade-chart.png',
   options?: ExportDarkModeOptions
 ): Promise<void> {
-  await withExportColors(element, options, async () => {
-    const dataUrl = await toPng(element, EXPORT_OPTIONS);
+  const { target, cleanup } = await getExportElement(element, options);
+  try {
+    const dataUrl = await toPng(target, EXPORT_OPTIONS);
     const link = document.createElement('a');
     link.download = filename;
     link.href = dataUrl;
     link.click();
-  });
+  } finally {
+    cleanup();
+  }
 }
 
 export async function downloadSvg(
@@ -111,8 +116,9 @@ export async function downloadSvg(
   filename: string = 'cascade-chart.svg',
   options?: ExportDarkModeOptions
 ): Promise<void> {
-  await withExportColors(element, options, async () => {
-    const dataUrl = await toSvg(element, {
+  const { target, cleanup } = await getExportElement(element, options);
+  try {
+    const dataUrl = await toSvg(target, {
       ...EXPORT_OPTIONS,
       pixelRatio: 1,
     });
@@ -120,7 +126,9 @@ export async function downloadSvg(
     link.download = filename;
     link.href = dataUrl;
     link.click();
-  });
+  } finally {
+    cleanup();
+  }
 }
 
 export async function downloadPptx(
@@ -129,9 +137,10 @@ export async function downloadPptx(
   options?: ExportDarkModeOptions
 ): Promise<void> {
   const PptxGenJS = (await import('pptxgenjs')).default;
+  const { target, cleanup } = await getExportElement(element, options);
 
-  await withExportColors(element, options, async () => {
-    const dataUrl = await toPng(element, {
+  try {
+    const dataUrl = await toPng(target, {
       ...EXPORT_OPTIONS,
       backgroundColor: '#ffffff',
       style: { background: '#ffffff' },
@@ -170,5 +179,7 @@ export async function downloadPptx(
     });
 
     await pptx.writeFile({ fileName: filename });
-  });
+  } finally {
+    cleanup();
+  }
 }
