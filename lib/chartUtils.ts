@@ -146,7 +146,7 @@ export function computeWaterfallLayout(
   const yRange = yMax - yMin;
   // Use more padding when values are clustered (bridge chart) vs spread out
   const yPadding = Math.max(yRange * 0.1, yMax * 0.01);
-  const yDomainMin = yMin - yPadding;
+  const yDomainMin = config.yAxisMin != null ? config.yAxisMin : yMin - yPadding;
   const yDomainMax = config.yAxisMax != null ? config.yAxisMax : yMax + yPadding;
 
   // Scales

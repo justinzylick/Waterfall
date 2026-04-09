@@ -60,6 +60,7 @@ export interface ChartConfig {
   startBarLabel: string;
   legendPosition: LegendPosition;
   yAxisMax: number | null;
+  yAxisMin: number | null;
   showAnnotations: boolean;
 }
 
@@ -144,6 +145,7 @@ const DEFAULT_CONFIG: ChartConfig = {
   startBarLabel: '-0.7%',
   legendPosition: 'top-right',
   yAxisMax: null,
+  yAxisMin: null,
   showAnnotations: true,
 };
 

@@ -272,6 +272,18 @@ export default function CustomPanel() {
             className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 tabular-nums"
           />
         </div>
+        <div className="flex items-center gap-2 pt-1">
+          <span className="text-xs text-gray-500 dark:text-gray-400 w-20 shrink-0">Y-axis min</span>
+          <input
+            type="number"
+            name="y-axis-min"
+            aria-label="Y-axis minimum value"
+            value={config.yAxisMin ?? ''}
+            onChange={(e) => setConfig({ yAxisMin: e.target.value === '' ? null : parseFloat(e.target.value) })}
+            placeholder="Auto"
+            className="flex-1 text-xs bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 tabular-nums"
+          />
+        </div>
       </Section>
 
       {/* Labels */}
